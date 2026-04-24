@@ -5,4 +5,4 @@ export default function SearchInput() {
         <img src="/images/icons/search.svg" alt="Иконка поиска" />
       </div>
     );
-}   
+}
