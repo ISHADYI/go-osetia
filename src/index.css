@@ -4,6 +4,9 @@
 @theme{
   --font-default: "Montserrat", sans-serif;
 }
+* {
+  @apply font-default;
+}
 @layer base {
   h1{
     font-size: 48px;
@@ -28,7 +31,4 @@
     line-height: 24px;
     font-weight: 400;
   }
-}
-* {
-  @apply font-default;
 }

@@ -10,13 +10,14 @@ import burgerMenu from "../assets/icons/menu-burger.svg";
 export function Header() {
   return (
     <Container>
-      <div className="flex items-center gap-6 justify-evenly">
+      <header className="flex items-center gap-6 justify-evenly mt-7.5 mb-12.5">
         <div className="flex items-center gap-9.5">
           <Logo />
           <ButtonLink
             href="#"
             text="Каталог"
             icon={burgerMenu}
+            ф
             variant="notFill"
           />
         </div>
@@ -31,7 +32,7 @@ export function Header() {
           {/* href указывать в {}? */}
           <ButtonLink href="#" text="Войти" icon={userIcon} variant="notFill" />
         </div>
-      </div>
+      </header>
     </Container>
   );
 }

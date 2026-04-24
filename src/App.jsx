@@ -1,11 +1,16 @@
-import { Header } from './components/Header'
-
+import Container from "./components/ui/Container";
+import { Header } from "./components/Header";
+import { Hero } from "./components/Hero";
 
 function App() {
-
   return (
+    <div>
       <Header />
-  )
+      <main>
+        <Hero />
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
