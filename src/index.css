@@ -20,6 +20,17 @@
     letter-spacing: -1.5%;
     font-weight: 600;
   }
+  .title-underline {
+    @apply relative inline-block pb-2.5;
+  }
+
+  .title-underline::after {
+    content: "";
+    @apply absolute bottom-0 left-0 w-full h-1 bg-[#EC562A];
+    border-radius: 50% / 100%; 
+    clip-path: ellipse(50% 50% at 50% 50%);
+  }
+
   h3{
     font-size: 24px;
     line-height: 100%;

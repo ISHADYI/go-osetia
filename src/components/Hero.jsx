@@ -5,8 +5,8 @@ import Container from "./ui/Container";
 
 export function Hero() {
   return (
-    <section className="relative w-full min-h-150 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center flex items-center justify-center">
-      <Container>
+    <section className="relative w-full h-fit mb-20">
+      <Container className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center text-center">
         <div className="flex flex-col justify-center items-center text-center gap-7.5">
           <h1 className="max-w-225 text-white">
             Найди компанию для любимых занятий во Владикавказе
@@ -21,6 +21,11 @@ export function Hero() {
           </div>
         </div>
       </Container>
+      <img
+        src="/images/hero-bg.jpg"
+        alt=""
+        className="bg-cover bg-center w-full"
+      />
     </section>
   );
 }
