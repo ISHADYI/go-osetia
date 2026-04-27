@@ -9,6 +9,8 @@ const MEETINGS_DATA = [
     title: "Игра в шахматы",
     type: "Спорт",
     price: 0,
+    minAge: 18,
+    maxAge: 30,
     location: "Парк им. К.Л.Хетагурова",
     date: "12 марта, 15:00",
     image: "/images/chess.jpg",
@@ -18,6 +20,74 @@ const MEETINGS_DATA = [
     title: "Велопрогулка",
     type: "Отдых на природе",
     price: 500,
+    minAge: 18,
+    maxAge: 30,
+    location: "Набережная",
+    date: "13 марта, 10:00",
+    image: "/images/bike.jpg",
+  },
+  {
+    id: 3,
+    title: "Велопрогулка",
+    type: "Отдых на природе",
+    price: 500,
+    minAge: 18,
+    maxAge: 30,
+    location: "Набережная",
+    date: "13 марта, 10:00",
+    image: "/images/bike.jpg",
+  },
+  {
+    id: 4,
+    title: "Велопрогулка",
+    type: "Отдых на природе",
+    price: 0,
+    minAge: 18,
+    maxAge: 30,
+    location: "Набережная",
+    date: "13 марта, 10:00",
+    image: "/images/bike.jpg",
+  },
+  {
+    id: 5,
+    title: "Велопрогулка",
+    type: "Отдых на природе",
+    price: 500,
+    minAge: 18,
+    maxAge: 30,
+    location: "Набережная",
+    date: "13 марта, 10:00",
+    image: "/images/bike.jpg",
+  },
+  {
+    id: 6,
+    title: "Велопрогулка",
+    type: "Отдых на природе",
+    price: 500,
+    minAge: 18,
+    maxAge: 30,
+    location: "Набережная",
+    date: "13 марта, 10:00",
+    image: "/images/bike.jpg",
+  },
+  {
+    id: 7,
+    title: "Велопрогулка",
+    type: "Отдых на природе",
+    price: 500,
+    minAge: 18,
+    maxAge: 30,
+    location: "Набережная",
+    date: "13 марта, 10:00",
+    image: "/images/bike.jpg",
+  },
+  {
+    id: 8,
+    title: "Велопрогулка",
+    type: "Отдых на природе",
+    price: 500,
+    minAge: 18,
+    maxAge: 30,
     location: "Набережная",
     date: "13 марта, 10:00",
     image: "/images/bike.jpg",
@@ -25,16 +95,27 @@ const MEETINGS_DATA = [
 ];
 
 export function AllMeetings() {
-  const [selectedType, setSelectedType] = useState("Все");
-  const [selectedPrice, setSelectedPrice] = useState("Любая");
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [ageRange, setAgeRange] = useState({ min: 0, max: 100 });
+  const [dates, setDates] = useState([]);
+  const [sortOrder, setSortOrder] = useState("default");
 
   const filteredMeetings = MEETINGS_DATA.filter((meeting) => {
-    const typeMatch = selectedType === "Все" || meeting.type === selectedType;
-    const priceMatch =
-      selectedPrice === "Любая" ||
-      (selectedPrice === "Бесплатно" ? meeting.price === 0 : meeting.price > 0);
+    const typeMatch =
+      selectedTypes.length === 0 || selectedTypes.includes(meeting.type);
 
-    return typeMatch && priceMatch;
+    const ageMatch =
+      meeting.minAge >= ageRange.min && meeting.maxAge <= ageRange.max;
+
+    const freeMatch = sortOrder === "free" ? meeting.price === 0 : true;
+
+    return typeMatch && ageMatch && freeMatch;
+  });
+
+  const sortedMeetings = [...filteredMeetings].sort((a, b) => {
+    if (sortOrder === "asc") return a.price - b.price;
+    if (sortOrder === "desc") return b.price - a.price;
+    return 0;
   });
 
   return (
@@ -45,22 +126,37 @@ export function AllMeetings() {
             Все встречи ({filteredMeetings.length})
           </h2>
 
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4 mb-10">
             <DropDown
               label="Тип события"
-              options={["Все", "Спорт", "Отдых на природе", "Настольные игры"]}
-              onSelect={setSelectedType}
+              options={["Спорт", "Настолки", "Творчество"]}
+              multiSelect={true}
+              onSelect={(val) => setSelectedTypes(val)}
             />
+
+            <DropDown label="Возраст" type="age" onSelect={setAgeRange} />
+
+            <DropDown label="Когда" type="calendar" onSelect={setDates} />
+            
             <DropDown
               label="Цена"
-              options={["Любая", "Бесплатно", "Платно"]}
-              onSelect={setSelectedPrice}
+              align="right"
+              options={[
+                "Бесплатно",
+                "По увеличению цены",
+                "По уменьшению цены",
+              ]}
+              onSelect={(val) => {
+                if (val === "Бесплатно") setSortOrder("free");
+                if (val === "По увеличению цены") setSortOrder("asc");
+                if (val === "По уменьшению цены") setSortOrder("desc");
+              }}
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredMeetings.map((meeting) => (
+          {sortedMeetings.map((meeting) => (
             <MeetingCard key={meeting.id} {...meeting} />
           ))}
         </div>

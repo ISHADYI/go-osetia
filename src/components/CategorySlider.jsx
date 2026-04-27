@@ -26,7 +26,6 @@ export function CategorySlider({ categories }) {
       </div>
 
       <div className="relative group w-full">
-        {/* Cписок категорий */}
         <div
           ref={scrollRef}
           className="flex gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4"

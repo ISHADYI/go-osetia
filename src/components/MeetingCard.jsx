@@ -9,15 +9,15 @@ export default function MeetingCard({
   type,
 }) {
   return (
-    <div className="bg-white rounded-[32px] overflow-hidden shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
-      <div className="relative aspect-[4/3] overflow-hidden">
+    <div className="bg-white rounded-[30px] overflow-hidden shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
+      <div className="relative aspect-4/3 overflow-hidden">
         <img
           src={image}
           alt={title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        <button className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors">
-          <span className="text-xs">🤍</span>
+        <button className="absolute top-4 right-4">
+          <span className="text-xl">🤍</span>
         </button>
       </div>
 
