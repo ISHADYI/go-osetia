@@ -6,21 +6,24 @@ export function CategorySlider({ categories }) {
   const scrollRef = useRef(null);
 
   const scroll = (direction) => {
-    if(scrollRef.current){
-      const {scrollLeft, clientWidth} = scrollRef.current
-      const scrollTo = direction == 'left'
-      ? scrollLeft - clientWidth / 2
-      : scrollLeft + clientWidth / 2;
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo =
+        direction == "left"
+          ? scrollLeft - clientWidth / 2
+          : scrollLeft + clientWidth / 2;
 
-      scrollRef.current.scrollTo({left: scrollTo, behavior: 'smooth'});
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
     }
-  }
+  };
 
   return (
-    <Container>
-      <h2 className="title-underline text-black mb-10">
-        Выбери встречу по интересам
-      </h2>
+    <section className="mb-20">
+      <div className="text-center mb-10">
+        <h2 className="title-underline text-black">
+          Выбери встречу по интересам
+        </h2>
+      </div>
 
       <div className="relative group w-full">
         {/* Cписок категорий */}
@@ -63,6 +66,6 @@ export function CategorySlider({ categories }) {
           </button>
         </div>
       </div>
-    </Container>
+    </section>
   );
 }

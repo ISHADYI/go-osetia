@@ -2,6 +2,8 @@ import Container from "./components/ui/Container";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 import { CategorySlider } from "./components/CategorySlider";
+import { RunningLine } from "./components/RunningLine";
+import { AllMeetings } from "./components/AllMeetings";
 
 const CATEGORIES_DATA = [
   {
@@ -49,6 +51,8 @@ function App() {
       <main>
         <Hero />
         <CategorySlider categories={CATEGORIES_DATA} />
+        <RunningLine />
+        <AllMeetings />
       </main>
     </div>
   );
