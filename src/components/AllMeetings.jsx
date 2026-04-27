@@ -7,7 +7,7 @@ const MEETINGS_DATA = [
   {
     id: 1,
     title: "Игра в шахматы",
-    type: "Спорт",
+    types: ["Настолки"],
     price: 0,
     minAge: 18,
     maxAge: 30,
@@ -18,8 +18,8 @@ const MEETINGS_DATA = [
   {
     id: 2,
     title: "Велопрогулка",
-    type: "Отдых на природе",
-    price: 500,
+    types: ["Спорт"],
+    price: 3200,
     minAge: 18,
     maxAge: 30,
     location: "Набережная",
@@ -29,8 +29,8 @@ const MEETINGS_DATA = [
   {
     id: 3,
     title: "Велопрогулка",
-    type: "Отдых на природе",
-    price: 500,
+    types: ["Спорт", "Настолки", "Настолки", "Настолки", "Настолки"],
+    price: 5000,
     minAge: 18,
     maxAge: 30,
     location: "Набережная",
@@ -40,7 +40,7 @@ const MEETINGS_DATA = [
   {
     id: 4,
     title: "Велопрогулка",
-    type: "Отдых на природе",
+    types: ["Спорт", "Творчество"],
     price: 0,
     minAge: 18,
     maxAge: 30,
@@ -51,8 +51,8 @@ const MEETINGS_DATA = [
   {
     id: 5,
     title: "Велопрогулка",
-    type: "Отдых на природе",
-    price: 500,
+    types: ["Творчество"],
+    price: 800,
     minAge: 18,
     maxAge: 30,
     location: "Набережная",
@@ -62,7 +62,7 @@ const MEETINGS_DATA = [
   {
     id: 6,
     title: "Велопрогулка",
-    type: "Отдых на природе",
+    types: ["Спорт"],
     price: 500,
     minAge: 18,
     maxAge: 30,
@@ -73,8 +73,8 @@ const MEETINGS_DATA = [
   {
     id: 7,
     title: "Велопрогулка",
-    type: "Отдых на природе",
-    price: 500,
+    types: ["Спорт"],
+    price: 100,
     minAge: 18,
     maxAge: 30,
     location: "Набережная",
@@ -84,7 +84,7 @@ const MEETINGS_DATA = [
   {
     id: 8,
     title: "Велопрогулка",
-    type: "Отдых на природе",
+    types: ["Спорт"],
     price: 500,
     minAge: 18,
     maxAge: 30,
@@ -102,14 +102,23 @@ export function AllMeetings() {
 
   const filteredMeetings = MEETINGS_DATA.filter((meeting) => {
     const typeMatch =
-      selectedTypes.length === 0 || selectedTypes.includes(meeting.type);
+      selectedTypes.length === 0 ||
+      meeting.types.some((t) => selectedTypes.includes(t));
+
+    let priceMatch = true;
+    if (sortOrder === "free") {
+      priceMatch = meeting.price === 0;
+    } else if (sortOrder === "asc" || sortOrder === "desc") {
+      // Если выбрана сортировка по цене, показываем только платные (> 0)
+      priceMatch = meeting.price > 0;
+    }
 
     const ageMatch =
       meeting.minAge >= ageRange.min && meeting.maxAge <= ageRange.max;
 
-    const freeMatch = sortOrder === "free" ? meeting.price === 0 : true;
+    // const freeMatch = sortOrder === "free" ? meeting.price === 0 : true;
 
-    return typeMatch && ageMatch && freeMatch;
+    return typeMatch && ageMatch && priceMatch;
   });
 
   const sortedMeetings = [...filteredMeetings].sort((a, b) => {
@@ -137,16 +146,18 @@ export function AllMeetings() {
             <DropDown label="Возраст" type="age" onSelect={setAgeRange} />
 
             <DropDown label="Когда" type="calendar" onSelect={setDates} />
-            
+
             <DropDown
               label="Цена"
               align="right"
               options={[
+                "Все",
                 "Бесплатно",
                 "По увеличению цены",
                 "По уменьшению цены",
               ]}
               onSelect={(val) => {
+                if (val === "Все") setSortOrder("default");
                 if (val === "Бесплатно") setSortOrder("free");
                 if (val === "По увеличению цены") setSortOrder("asc");
                 if (val === "По уменьшению цены") setSortOrder("desc");

@@ -6,7 +6,7 @@ export default function MeetingCard({
   date,
   price,
   image,
-  type,
+  types,
 }) {
   return (
     <div className="bg-white rounded-[30px] overflow-hidden shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
@@ -45,15 +45,36 @@ export default function MeetingCard({
           <span className="truncate">{location}</span>
         </div>
 
-        <div className="flex justify-between items-center pt-2 border-t border-gray-50">
+        {/* <div className="flex justify-between items-center pt-2 border-t border-gray-50">
           <span className="text-xs text-gray-400 uppercase font-semibold">
-            {type}
+            {types && types.length > 0 ? types[0] : "Встреча"}
           </span>
           <div className="flex items-center gap-1 text-gray-700 font-medium">
             <Users size={16} />
             <span className="text-sm">3 из 6</span>
           </div>
+        </div> */}
+
+        <div className="flex justify-between items-center pt-2 border-t border-gray-50 gap-4">
+          <div className="flex gap-2 overflow-hidden items-center">
+            {types &&
+              types.map((t, index) => (
+                <span
+                  key={index}
+                  className="text-xs text-gray-400 uppercase font-semibold whitespace-nowrap"
+                >
+                  {t}
+                  {index !== types.length - 1 && ","}
+                </span>
+              ))}
+          </div>
+
+          <div className="flex items-center gap-1 text-gray-700 font-medium shrink-0">
+            <Users size={16} />
+            <span className="text-sm">3 из 6</span>
+          </div>
         </div>
+        
       </div>
     </div>
   );
