@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Container from "./ui/Container";
 import DropDown from "./ui/DropDown";
-import MeetingCard from "./MeetingCard";
+import MeetingCard from "./ui/MeetingCard";
 
 const MEETINGS_DATA = [
   {
@@ -9,10 +9,10 @@ const MEETINGS_DATA = [
     title: "Игра в шахматы",
     types: ["Настолки"],
     price: 0,
-    minAge: 18,
-    maxAge: 30,
+    minAge: 40,
+    maxAge: 50,
     location: "Парк им. К.Л.Хетагурова",
-    date: "12 марта, 15:00",
+    date: "14 марта, 15:00",
     image: "/images/chess.jpg",
   },
   {
@@ -109,7 +109,6 @@ export function AllMeetings() {
     if (sortOrder === "free") {
       priceMatch = meeting.price === 0;
     } else if (sortOrder === "asc" || sortOrder === "desc") {
-      // Если выбрана сортировка по цене, показываем только платные (> 0)
       priceMatch = meeting.price > 0;
     }
 
@@ -128,8 +127,8 @@ export function AllMeetings() {
   });
 
   return (
-    <Container>
-      <section className="py-10">
+    <section className="mb-20">
+      <Container>
         <div className="flex justify-between items-center mb-8">
           <h2 className="title-underline text-black">
             Все встречи ({filteredMeetings.length})
@@ -171,7 +170,7 @@ export function AllMeetings() {
             <MeetingCard key={meeting.id} {...meeting} />
           ))}
         </div>
-      </section>
-    </Container>
+      </Container>
+    </section>
   );
 }

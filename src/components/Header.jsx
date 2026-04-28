@@ -10,7 +10,7 @@ import burgerMenu from "../assets/icons/menu-burger.svg";
 export function Header() {
   return (
     <Container>
-      <header className="flex items-center gap-6 justify-evenly mt-7.5 mb-12.5">
+      <header className="flex items-center gap-6 justify-between mt-7.5 mb-12.5">
         <div className="flex items-center gap-9.5">
           <Logo />
           <ButtonLink

@@ -4,6 +4,7 @@ import { Hero } from "./components/Hero";
 import { CategorySlider } from "./components/CategorySlider";
 import { RunningLine } from "./components/RunningLine";
 import { AllMeetings } from "./components/AllMeetings";
+import { OfficialPoster } from "./components/OfficialPoster";
 
 const CATEGORIES_DATA = [
   {
@@ -53,6 +54,7 @@ function App() {
         <CategorySlider categories={CATEGORIES_DATA} />
         <RunningLine />
         <AllMeetings />
+        <OfficialPoster/>
       </main>
     </div>
   );
