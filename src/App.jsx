@@ -5,6 +5,12 @@ import { CategorySlider } from "./components/CategorySlider";
 import { RunningLine } from "./components/RunningLine";
 import { AllMeetings } from "./components/AllMeetings";
 import { OfficialPoster } from "./components/OfficialPoster";
+import Map from "./components/Map";
+import InterestingPlaces from "./components/InterestingPlaces";
+import Cta from "./components/Cta";
+import PastEventsPhotos from "./components/PastEventsPhotos";
+import Reviews from "./components/Reviews";
+import Footer from "./components/Footer";
 
 const CATEGORIES_DATA = [
   {
@@ -54,8 +60,14 @@ function App() {
         <CategorySlider categories={CATEGORIES_DATA} />
         <RunningLine />
         <AllMeetings />
-        <OfficialPoster/>
+        <OfficialPoster />
+        <Map />
+        <InterestingPlaces />
+        <Cta />
+        <PastEventsPhotos />
+        <Reviews />
       </main>
+      <Footer/>
     </div>
   );
 }
