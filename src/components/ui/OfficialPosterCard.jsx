@@ -10,14 +10,14 @@ export default function OfficialPosterCard({
 }) {
   return (
     <article
-      className="relative w-[280px] h-[400px] rounded-[30px] overflow-hidden flex flex-col justify-between p-5 group cursor-pointer shrink-0"
+      className="relative w-[315px] h-[440px] rounded-[30px] overflow-hidden flex flex-col justify-between p-5 group cursor-pointer shrink-0"
       style={{
         backgroundImage: `url(${image})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute inset-0 bg-linear-to-t from-[#0F0F10]/80 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-[#0F0F10] via-transparent to-transparent" />
 
       <header className="relative z-10 flex justify-between items-start">
         <span className="bg-orange-600 text-white text-[12px] px-3 py-1 rounded-full font-medium">
