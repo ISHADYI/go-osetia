@@ -10,7 +10,6 @@ export default function PlaceCard({ image, title, address, className }) {
         alt={title}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
       />
-      {/* Затемнение */}
       <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
 
       <div className="absolute bottom-6 left-6 right-6 text-white">
