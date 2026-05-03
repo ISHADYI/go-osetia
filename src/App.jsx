@@ -1,74 +1,30 @@
-import Container from "./components/ui/Container";
-import { Header } from "./components/Header";
-import { Hero } from "./components/Hero";
-import { CategorySlider } from "./components/CategorySlider";
-import { RunningLine } from "./components/RunningLine";
-import { AllMeetings } from "./components/AllMeetings";
-import { OfficialPoster } from "./components/OfficialPoster";
-import Map from "./components/Map";
-import InterestingPlaces from "./components/InterestingPlaces";
-import Cta from "./components/Cta";
-import PastEventsPhotos from "./components/PastEventsPhotos";
-import Reviews from "./components/Reviews";
-import Footer from "./components/Footer";
-
-const CATEGORIES_DATA = [
-  {
-    title: "Активный отдых",
-    count: 24,
-    today: 7,
-    image: "/images/active-category.png",
-  },
-  {
-    title: "Настольные игры",
-    count: 12,
-    today: 3,
-    image: "/images/active-category.png",
-  },
-  {
-    title: "Творчество",
-    count: 8,
-    today: 2,
-    image: "/images/active-category.png",
-  },
-  {
-    title: "Пикники",
-    count: 15,
-    today: 5,
-    image: "/images/active-category.png",
-  },
-  {
-    title: "Пикники",
-    count: 15,
-    today: 5,
-    image: "/images/active-category.png",
-  },
-  {
-    title: "Пикники",
-    count: 15,
-    today: 5,
-    image: "/images/active-category.png",
-  },
-];
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { Header } from "./components/Header.jsx";
+import Footer from "./components/Footer.jsx";
+import { HomePage } from "./pages/HomePage.jsx";
+import { EventPage } from "./pages/EventPage.jsx";
+import { OrganizerPage } from "./pages/OrganizerPage.jsx";
 
 function App() {
   return (
-    <div>
+    <Router>
       <Header />
       <main>
-        <Hero />
-        <CategorySlider categories={CATEGORIES_DATA} />
-        <RunningLine />
-        <AllMeetings />
-        <OfficialPoster />
-        <Map />
-        <InterestingPlaces />
-        <Cta />
-        <PastEventsPhotos />
-        <Reviews />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/event/:id" element={<EventPage />} />
+          <Route path="/organizer/:id" element={<OrganizerPage />} />
+          <Route path="/events/*" element={<HomePage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
       </main>
-      <Footer/>
-    </div>
+      <Footer />
+    </Router>
   );
 }
 
