@@ -1,142 +1,199 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { NavLink, Link } from "react-router-dom";
 import Container from "./ui/Container";
 import { Logo } from "./ui/Logo";
-import SearchInput from "./ui/SearchInput";
 import ButtonLink from "./ui/ButtonLink";
 import AuthModal from "./ui/AuthModal";
 
 import heartIcon from "../assets/icons/heart-outline.svg";
 import userIcon from "../assets/icons/user.svg";
-import burgerMenu from "../assets/icons/menu-burger.svg";
+
+const SearchIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="11" cy="11" r="8"></circle>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+);
 
 export function Header() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [isCatalogOpen, setIsCatalogOpen] = useState(false);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const searchInputRef = useRef(null);
 
   useEffect(() => {
-    if (isCatalogOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
+    if (isSearchActive) {
+      const timer = setTimeout(() => searchInputRef.current?.focus(), 100);
+      return () => clearTimeout(timer);
     }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isCatalogOpen]);
+  }, [isSearchActive]);
+
+  const navLinkClass = ({ isActive }) =>
+    `text-[16px] font-semibold transition-colors hover:text-[#F15431] whitespace-nowrap ${isActive ? "text-[#F15431]" : "text-[#0F0F10]"}`;
 
   return (
-    <div className="relative z-[100]">
+    <div className="relative z-[100] bg-white border-b border-gray-100">
+      <div
+        className={`fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-all duration-300 ${
+          isSearchActive ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+        onClick={() => setIsSearchActive(false)}
+      />
+
       <Container>
-        <header className="relative z-50 flex items-center gap-6 justify-between mt-7.5 mb-12.5">
-          <div className="flex items-center gap-9.5">
+        <header className="flex items-center justify-between py-5 min-h-[80px] relative">
+          <div className={`transition-all duration-300 ${isSearchActive ? "opacity-0 invisible -translate-x-4" : "opacity-100 visible"}`}>
             <Logo />
-            <ButtonLink
-              href="#"
-              text="Каталог"
-              icon={burgerMenu}
-              variant="notFill"
-              onClick={(e) => {
-                e.preventDefault();
-                setIsCatalogOpen(!isCatalogOpen);
-              }}
-            />
           </div>
-          <SearchInput />
-          <div className="flex items-center gap-6">
-            <ButtonLink
-              href="#"
-              text="Мои планы"
-              icon={heartIcon}
-              variant="notFill"
-            />
-            {/* href указывать в {}? */}
-            <ButtonLink
-              href="#"
-              text="Войти"
-              icon={userIcon}
-              variant="notFill"
-              onClick={(e) => {
-                e.preventDefault();
-                setIsAuthOpen(true);
-              }}
-            />
+
+          <nav
+            className={`absolute left-1/2 -translate-x-1/2 flex items-center gap-8 transition-all duration-300 ${
+              isSearchActive
+                ? "opacity-0 invisible scale-95"
+                : "opacity-100 visible scale-100"
+            }`}
+          >
+            <NavLink to="/" className={navLinkClass}>
+              Главная
+            </NavLink>
+            <NavLink to="/about" className={navLinkClass}>
+              О нас
+            </NavLink>
+            <NavLink to="/categories" className={navLinkClass}>
+              Категории
+            </NavLink>
+            <NavLink to="/support" className={navLinkClass}>
+              Поддержка
+            </NavLink>
+
+            <div className="relative group cursor-pointer">
+              <div className="flex items-center gap-1 text-[16px] font-semibold text-[#0F0F10] hover:text-[#F15431] transition-colors">
+                Интересные места
+                <svg
+                  className="w-3 h-3 transition-transform group-hover:rotate-180"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+              <div className="absolute top-full right-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-2 min-w-[220px] flex flex-col gap-1">
+                  <Link
+                    to="/places/coworking"
+                    className="px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-orange-50 hover:text-[#F15431] rounded-xl transition-colors"
+                  >
+                    Коворкинги
+                  </Link>
+                  <Link
+                    to="/places/restaurants"
+                    className="px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-orange-50 hover:text-[#F15431] rounded-xl transition-colors"
+                  >
+                    Кафе
+                  </Link>
+                  <Link
+                    to="/places/parks"
+                    className="px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-orange-50 hover:text-[#F15431] rounded-xl transition-colors"
+                  >
+                    Парки и зоны отдыха
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          <div
+            className={`absolute left-1/2 -translate-x-1/2 w-full max-w-[700px] transition-all duration-500 ease-out z-50 ${
+              isSearchActive
+                ? "opacity-100 visible translate-y-0"
+                : "opacity-0 invisible -translate-y-2 pointer-events-none"
+            }`}
+          >
+            <div className="relative flex items-center">
+              <div className="absolute left-5 text-[#F15431]">
+                <SearchIcon />
+              </div>
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Поиск событий, мест или городов..."
+                className="w-full bg-gray-50 border-none py-4 pl-14 pr-14 rounded-2xl shadow-inner text-[18px] outline-none focus:ring-2 focus:ring-[#F15431]/20 transition-all"
+                onKeyDown={(e) =>
+                  e.key === "Escape" && setIsSearchActive(false)
+                }
+              />
+              <button
+                onClick={() => setIsSearchActive(false)}
+                className="absolute right-5 text-gray-400 hover:text-black transition-colors p-1"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 z-10">
+            {!isSearchActive && (
+              <button
+                onClick={() => setIsSearchActive(true)}
+                className="p-2.5 text-gray-600 hover:text-[#F15431] transition-all rounded-full hover:bg-gray-50"
+              >
+                <SearchIcon />
+              </button>
+            )}
+
+            <div
+              className={`flex items-center gap-4 transition-all duration-300 ${isSearchActive ? "opacity-0 invisible translate-x-4" : "opacity-100 visible"}`}
+            >
+              <ButtonLink
+                href="/plans"
+                text="Мои планы"
+                icon={heartIcon}
+                variant="header"
+              />
+              <ButtonLink
+                href="#"
+                text="Войти"
+                icon={userIcon}
+                variant="header"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsAuthOpen(true);
+                }}
+              />
+              <Link
+                to="#"
+                className="bg-[#EC562A] text-white px-6 py-3 rounded-full text-[13px] font-bold uppercase tracking-wider hover:bg-[#d44324] transition-all shadow-md hover:shadow-lg active:scale-95 whitespace-nowrap"
+              >
+                Создать встречу
+              </Link>
+            </div>
           </div>
         </header>
       </Container>
-
-      {/* Открытй каталог */}
-      <div
-        className={`absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-2xl transition-all duration-300 origin-top z-40 ${
-          isCatalogOpen
-            ? "opacity-100 scale-y-100 visible"
-            : "opacity-0 scale-y-95 invisible"
-        }`}
-      >
-        <Container className="py-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div>
-              <h3 className="font-bold text-xl mb-6 text-[#0F0F10]">
-                Мероприятия
-              </h3>
-              <ul className="flex flex-col gap-4 text-[#0F0F10] opacity-80">
-                <li className="w-fit hover:text-[#F15431] hover:opacity-100 transition-colors">
-                  <a href="/events/concerts">Концерты</a>
-                </li>
-                <li className="w-fit hover:text-[#F15431] hover:opacity-100 transition-colors">
-                  <a href="/events/exhibitions">Выставки</a>
-                </li>
-                <li className="w-fit hover:text-[#F15431] hover:opacity-100 cursor-pointer transition-colors">
-                  <a href="/events/master-classes">Мастер-классы</a>
-                </li>
-                <li className="w-fit hover:text-[#F15431] hover:opacity-100 cursor-pointer transition-colors">
-                  <a href="/events/sport">Спорт</a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-bold text-xl mb-6 text-[#0F0F10]">
-                Интересные места
-              </h3>
-              <ul className="flex flex-col gap-4 text-[#0F0F10] opacity-80">
-                <li className="w-fit hover:text-[#F15431] hover:opacity-100 transition-colors">
-                  <a href="/places/restaurants">Рестораны и кафе</a>
-                </li>
-                <li className="w-fit hover:text-[#F15431] hover:opacity-100 transition-colors">
-                  <a href="/places/parks">Парки и зоны отдыха</a>
-                </li>
-                <li className="w-fit hover:text-[#F15431] hover:opacity-100 transition-colors">
-                  <a href="/places/coworking">Коворкинги</a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-bold text-xl mb-6 text-[#0F0F10]">
-                О проекте
-              </h3>
-              <ul className="flex flex-col gap-4 text-[#0F0F10] opacity-80">
-                <li className="w-fit hover:text-[#F15431] hover:opacity-100 transition-colors">
-                  <a href="/map">Карта Владикавказа</a>
-                </li>
-                <li className="w-fit hover:text-[#F15431] hover:opacity-100 transition-colors">
-                  <a href="/support">Поддержка</a>
-                </li>
-                <li className="w-fit hover:text-[#F15431] hover:opacity-100 transition-colors">
-                  <a href="/contacts">Контакты</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </Container>
-      </div>
-
-      {isCatalogOpen && (
-        <div
-          className="fixed inset-0 top-[100px] bg-black/40 z-30 backdrop-blur-md transition-opacity"
-          onClick={() => setIsCatalogOpen(false)}
-        />
-      )}
 
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
     </div>
