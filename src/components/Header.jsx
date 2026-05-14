@@ -124,7 +124,7 @@ export function Header() {
             }`}
           >
             <div className="relative flex items-center">
-              <div className="absolute left-5 text-[#F15431]">
+              <div className="absolute left-5 text-orange">
                 <SearchIcon />
               </div>
               <input
