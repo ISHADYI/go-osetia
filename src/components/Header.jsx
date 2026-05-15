@@ -7,6 +7,7 @@ import AuthModal from "./ui/AuthModal";
 
 import heartIcon from "../assets/icons/heart-outline.svg";
 import userIcon from "../assets/icons/user.svg";
+import searchIcon from "../assets/icons/search.svg";
 
 const SearchIcon = () => (
   <svg
@@ -37,10 +38,11 @@ export function Header() {
   }, [isSearchActive]);
 
   const navLinkClass = ({ isActive }) =>
-    `text-[16px] font-semibold transition-colors hover:text-[#F15431] whitespace-nowrap ${isActive ? "text-[#F15431]" : "text-[#0F0F10]"}`;
+    `font-semibold transition-colors hover:text-orange ${isActive ? "text-orange" : "text-black"}`;
 
   return (
-    <div className="relative z-[100] bg-white border-b border-gray-100">
+    <div className="relative z-100 bg-white">
+      {/* фон при открытом поиске */}
       <div
         className={`fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-all duration-300 ${
           isSearchActive ? "opacity-100 visible" : "opacity-0 invisible"
@@ -49,8 +51,10 @@ export function Header() {
       />
 
       <Container>
-        <header className="flex items-center justify-between py-5 min-h-[80px] relative">
-          <div className={`transition-all duration-300 ${isSearchActive ? "opacity-0 invisible -translate-x-4" : "opacity-100 visible"}`}>
+        <header className="relative flex items-center justify-between py-6">
+          <div
+            className={`transition-all duration-300 ${isSearchActive ? "opacity-0 invisible -translate-x-4" : "opacity-100 visible"}`}
+          >
             <Logo />
           </div>
 
@@ -75,7 +79,7 @@ export function Header() {
             </NavLink>
 
             <div className="relative group cursor-pointer">
-              <div className="flex items-center gap-1 text-[16px] font-semibold text-[#0F0F10] hover:text-[#F15431] transition-colors">
+              <div className="flex items-center gap-1 font-semibold text-black hover:text-orange transition-colors">
                 Интересные места
                 <svg
                   className="w-3 h-3 transition-transform group-hover:rotate-180"
@@ -95,19 +99,19 @@ export function Header() {
                 <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-2 min-w-[220px] flex flex-col gap-1">
                   <Link
                     to="/places/coworking"
-                    className="px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-orange-50 hover:text-[#F15431] rounded-xl transition-colors"
+                    className="px-4 py-2.5 text-sm font-semibold text-black hover:bg-orange-50 hover:text-orange rounded-xl transition-colors"
                   >
                     Коворкинги
                   </Link>
                   <Link
                     to="/places/restaurants"
-                    className="px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-orange-50 hover:text-[#F15431] rounded-xl transition-colors"
+                    className="px-4 py-2.5 text-sm font-semibold text-black hover:bg-orange-50 hover:text-orange rounded-xl transition-colors"
                   >
                     Кафе
                   </Link>
                   <Link
                     to="/places/parks"
-                    className="px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-orange-50 hover:text-[#F15431] rounded-xl transition-colors"
+                    className="px-4 py-2.5 text-sm font-semibold text-black hover:bg-orange-50 hover:text-orange rounded-xl transition-colors"
                   >
                     Парки и зоны отдыха
                   </Link>
@@ -116,6 +120,7 @@ export function Header() {
             </div>
           </nav>
 
+          {/* поиск */}
           <div
             className={`absolute left-1/2 -translate-x-1/2 w-full max-w-[700px] transition-all duration-500 ease-out z-50 ${
               isSearchActive
@@ -130,8 +135,8 @@ export function Header() {
               <input
                 ref={searchInputRef}
                 type="text"
-                placeholder="Поиск событий, мест или городов..."
-                className="w-full bg-gray-50 border-none py-4 pl-14 pr-14 rounded-2xl shadow-inner text-[18px] outline-none focus:ring-2 focus:ring-[#F15431]/20 transition-all"
+                placeholder="Поиск встреч..."
+                className="w-full bg-gray-50 border-none py-4 pl-14 pr-14 rounded-2xl outline-none focus:ring-1 focus:ring-orange transition-all"
                 onKeyDown={(e) =>
                   e.key === "Escape" && setIsSearchActive(false)
                 }
@@ -159,7 +164,7 @@ export function Header() {
             {!isSearchActive && (
               <button
                 onClick={() => setIsSearchActive(true)}
-                className="p-2.5 text-gray-600 hover:text-[#F15431] transition-all rounded-full hover:bg-gray-50"
+                className="p-2.5 text-black hover:text-orange transition-all rounded-full cursor-pointer"
               >
                 <SearchIcon />
               </button>
@@ -184,12 +189,11 @@ export function Header() {
                   setIsAuthOpen(true);
                 }}
               />
-              <Link
-                to="#"
-                className="bg-[#EC562A] text-white px-6 py-3 rounded-full text-[13px] font-bold uppercase tracking-wider hover:bg-[#d44324] transition-all shadow-md hover:shadow-lg active:scale-95 whitespace-nowrap"
-              >
-                Создать встречу
-              </Link>
+              <ButtonLink
+                href="#"
+                text="Создать встречу"
+                variant="defaultFill"
+              />
             </div>
           </div>
         </header>

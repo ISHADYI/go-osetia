@@ -14,7 +14,7 @@ function App() {
   return (
     <Router>
       <Header />
-      <main>
+      <main className="bg-white">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/event/:id" element={<EventPage />} />

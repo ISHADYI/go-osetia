@@ -4,7 +4,7 @@ export default function ButtonLink({ href, text, icon, variant, onClick }) {
 
   const variants = {
     defaultFill:
-      "py-[12px] px-[30px] bg-[#EC562A] font-semibold text-white rounded-[100px] transition-all duration-300 ease-in-out hover:bg-[#FF6B3D] hover:-translate-y-0.5 active:scale-95",
+      "py-[12px] px-[30px] bg-orange font-semibold text-white rounded-[100px] transition-all duration-300 hover:bg-[#d44324]",
     whiteFill:
       "py-[12px] px-[30px] bg-[#FFFFFF] font-semibold text-[#EC562A] rounded-[100px] transition-all duration-300 hover:bg-[#FFF5F2] hover:-translate-y-0.5 active:scale-95",
     notFill:
