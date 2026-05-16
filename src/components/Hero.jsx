@@ -16,7 +16,7 @@ export function Hero() {
             или присоединяйся к другим
           </p>
           <div className="flex items-center gap-5">
-            <ButtonLink href="#" text="Найти встречу" variant="defaultFill" />
+            <ButtonLink href="#" text="Найти встречу" variant="orangeFill" />
             <ButtonLink href="#" text="Создать встречу" variant="whiteFill" />
           </div>
         </div>

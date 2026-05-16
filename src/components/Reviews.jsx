@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Container from "./ui/Container";
+import ButtonLink from "./ui/ButtonLink";
 
 const REVIEWS_DATA = [
   {
@@ -78,13 +79,13 @@ export default function Reviews() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-          <button className="bg-[#E9E9E9] text-[#0F0F10] py-4 rounded-full font-semibold hover:bg-gray-300 transition-colors cursor-pointer">
+        <div className="grid grid-cols-1 text-center md:grid-cols-2 gap-6 mt-4">
+          <a className="bg-[#E9E9E9] text-black py-[12px] px-[40px] rounded-full font-semibold hover:bg-gray-300 transition-colors cursor-pointer">
             Смотреть все
-          </button>
-          <button className="bg-[#F15431] text-white py-4 rounded-full font-semibold hover:bg-[#d44324] transition-colors shadow-lg cursor-pointer">
+          </a>
+          <a className="bg-orange text-white py-[12px] px-[40px] rounded-full font-semibold hover:bg-[#d44324] transition-colors cursor-pointer">
             Написать отзыв
-          </button>
+          </a>
         </div>
       </Container>
     </section>

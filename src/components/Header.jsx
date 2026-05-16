@@ -7,7 +7,6 @@ import AuthModal from "./ui/AuthModal";
 
 import heartIcon from "../assets/icons/heart-outline.svg";
 import userIcon from "../assets/icons/user.svg";
-import searchIcon from "../assets/icons/search.svg";
 
 const SearchIcon = () => (
   <svg
@@ -38,7 +37,7 @@ export function Header() {
   }, [isSearchActive]);
 
   const navLinkClass = ({ isActive }) =>
-    `font-semibold transition-colors hover:text-orange ${isActive ? "text-orange" : "text-black"}`;
+    `font-semibold transition-colors hover:text-orange whitespace-nowrap ${isActive ? "text-orange" : "text-black"}`;
 
   return (
     <div className="relative z-100 bg-white">
@@ -52,77 +51,77 @@ export function Header() {
 
       <Container>
         <header className="relative flex items-center justify-between py-6">
+          {/* ЛЕВАЯ ЧАСТЬ: ЛОГО + НАВИГАЦИЯ */}
           <div
-            className={`transition-all duration-300 ${isSearchActive ? "opacity-0 invisible -translate-x-4" : "opacity-100 visible"}`}
-          >
-            <Logo />
-          </div>
-
-          <nav
-            className={`absolute left-1/2 -translate-x-1/2 flex items-center gap-8 transition-all duration-300 ${
+            className={`flex items-center gap-10 transition-all duration-300 ${
               isSearchActive
-                ? "opacity-0 invisible scale-95"
-                : "opacity-100 visible scale-100"
+                ? "opacity-0 invisible -translate-x-4 pointer-events-none"
+                : "opacity-100 visible"
             }`}
           >
-            <NavLink to="/" className={navLinkClass}>
-              Главная
-            </NavLink>
-            <NavLink to="/about" className={navLinkClass}>
-              О нас
-            </NavLink>
-            <NavLink to="/categories" className={navLinkClass}>
-              Категории
-            </NavLink>
-            <NavLink to="/support" className={navLinkClass}>
-              Поддержка
-            </NavLink>
+            <Logo />
 
-            <div className="relative group cursor-pointer">
-              <div className="flex items-center gap-1 font-semibold text-black hover:text-orange transition-colors">
-                Интересные места
-                <svg
-                  className="w-3 h-3 transition-transform group-hover:rotate-180"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={3}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-              <div className="absolute top-full right-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
-                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-2 min-w-[220px] flex flex-col gap-1">
-                  <Link
-                    to="/places/coworking"
-                    className="px-4 py-2.5 text-sm font-semibold text-black hover:bg-orange-50 hover:text-orange rounded-xl transition-colors"
+            <nav className="flex items-center gap-6">
+              <NavLink to="/" className={navLinkClass}>
+                Главная
+              </NavLink>
+              <NavLink to="/about" className={navLinkClass}>
+                О нас
+              </NavLink>
+              <NavLink to="/categories" className={navLinkClass}>
+                Категории
+              </NavLink>
+              <NavLink to="/support" className={navLinkClass}>
+                Поддержка
+              </NavLink>
+
+              <div className="relative group cursor-pointer whitespace-nowrap">
+                <div className="flex items-center gap-1 font-semibold text-black hover:text-orange transition-colors">
+                  Интересные места
+                  <svg
+                    className="w-3 h-3 transition-transform group-hover:rotate-180"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    Коворкинги
-                  </Link>
-                  <Link
-                    to="/places/restaurants"
-                    className="px-4 py-2.5 text-sm font-semibold text-black hover:bg-orange-50 hover:text-orange rounded-xl transition-colors"
-                  >
-                    Кафе
-                  </Link>
-                  <Link
-                    to="/places/parks"
-                    className="px-4 py-2.5 text-sm font-semibold text-black hover:bg-orange-50 hover:text-orange rounded-xl transition-colors"
-                  >
-                    Парки и зоны отдыха
-                  </Link>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={3}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+
+                <div className="absolute top-full left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                  <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-2 min-w-[220px] flex flex-col gap-1">
+                    <Link
+                      to="/places/coworking"
+                      className="px-4 py-2.5 text-sm font-semibold text-black hover:bg-orange-50 hover:text-orange rounded-xl transition-colors"
+                    >
+                      Коворкинги
+                    </Link>
+                    <Link
+                      to="/places/restaurants"
+                      className="px-4 py-2.5 text-sm font-semibold text-black hover:bg-orange-50 hover:text-orange rounded-xl transition-colors"
+                    >
+                      Кафе
+                    </Link>
+                    <Link
+                      to="/places/parks"
+                      className="px-4 py-2.5 text-sm font-semibold text-black hover:bg-orange-50 hover:text-orange rounded-xl transition-colors"
+                    >
+                      Парки и зоны отдыха
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          </nav>
+            </nav>
+          </div>
 
-          {/* поиск */}
+          {/* ПОИСКОВАЯ СТРОКА ПО ЦЕНТРУ (всплывает на всю ширину между лого и кнопками) */}
           <div
-            className={`absolute left-1/2 -translate-x-1/2 w-full max-w-[700px] transition-all duration-500 ease-out z-50 ${
+            className={`absolute left-1/2 -translate-x-1/2 w-full max-w-[650px] transition-all duration-500 ease-out z-50 px-4 ${
               isSearchActive
                 ? "opacity-100 visible translate-y-0"
                 : "opacity-0 invisible -translate-y-2 pointer-events-none"
@@ -160,7 +159,8 @@ export function Header() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 z-10">
+          {/* ПРАВАЯ ЧАСТЬ: КНОПКИ ДЕЙСТВИЙ */}
+          <div className="flex items-center gap-4 z-10 flex-shrink-0">
             {!isSearchActive && (
               <button
                 onClick={() => setIsSearchActive(true)}
@@ -171,7 +171,11 @@ export function Header() {
             )}
 
             <div
-              className={`flex items-center gap-4 transition-all duration-300 ${isSearchActive ? "opacity-0 invisible translate-x-4" : "opacity-100 visible"}`}
+              className={`flex items-center gap-4 transition-all duration-300 ${
+                isSearchActive
+                  ? "opacity-0 invisible translate-x-4 pointer-events-none"
+                  : "opacity-100 visible"
+              }`}
             >
               <ButtonLink
                 href="/plans"
@@ -192,7 +196,7 @@ export function Header() {
               <ButtonLink
                 href="#"
                 text="Создать встречу"
-                variant="defaultFill"
+                variant="orangeFill"
               />
             </div>
           </div>

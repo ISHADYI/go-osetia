@@ -1,12 +1,14 @@
 export default function ButtonLink({ href, text, icon, variant, onClick }) {
   const baseStyles =
-    "flex font-inherit items-center gap-2 transition-all duration-200 active:scale-95";
+    "flex font-inherit items-center gap-2 font-semibold transition-all duration-300 active:scale-95";
 
   const variants = {
-    defaultFill:
-      "py-[12px] px-[30px] bg-orange font-semibold text-white rounded-[100px] transition-all duration-300 hover:bg-[#d44324]",
+    orangeFill:
+      "py-[12px] px-[40px] bg-orange text-white rounded-[100px] hover:bg-[#d44324]",
     whiteFill:
-      "py-[12px] px-[30px] bg-[#FFFFFF] font-semibold text-[#EC562A] rounded-[100px] transition-all duration-300 hover:bg-[#FFF5F2] hover:-translate-y-0.5 active:scale-95",
+      "py-[12px] px-[40px] bg-white text-black rounded-[100px] hover:bg-[#FFF5F2]",
+    blackFill:
+      "py-[12px] px-[40px] bg-black text-white rounded-[100px] hover:bg-white hover:text-black",
     notFill:
       "bg-transparent text-gray-700 font-semibold px-4 py-2 rounded-xl transition-all duration-300 hover:text-[#EC562A] hover:bg-orange-50/50 active:scale-95",
     header:

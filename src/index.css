@@ -5,8 +5,8 @@
   --font-default: "Montserrat", sans-serif;
 
   --color-orange: #E85102;
-  --color-black: #161616;
-  --color-white: #F9F9F9;
+  --color-black: #1C1C1C;
+  --color-white: #FDF9EC;
 }
 * {
   @apply font-default;
@@ -14,6 +14,7 @@
 @layer base {
   body{
     font-size: 16px;
+    background-color: #FDF9EC;
   }
   h1{
     font-size: 48px;

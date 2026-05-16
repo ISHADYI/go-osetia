@@ -1,4 +1,5 @@
 import Container from "./ui/Container";
+import ButtonLink from "./ui/ButtonLink";
 
 const PHOTOS = [
   {
@@ -57,9 +58,7 @@ export default function PastEventsPhotos() {
         </div>
 
         <div className="mt-12 flex justify-center">
-          <button className="bg-[#F15431] text-white px-10 py-4 rounded-full font-semibold hover:bg-[#d44324] transition-colors shadow-lg active:scale-95 cursor-pointer">
-            Посмотреть все
-          </button>
+          <ButtonLink href="#" text="Посмотреть всё" variant="orangeFill" />
         </div>
       </Container>
     </section>

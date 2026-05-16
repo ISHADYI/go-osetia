@@ -1,4 +1,5 @@
 import Container from "./ui/Container";
+import ButtonLink from "./ui/ButtonLink";
 
 export default function CreateEventCTA() {
   return (
@@ -16,9 +17,7 @@ export default function CreateEventCTA() {
             минуты
           </h2>
 
-          <button className="bg-white text-[#F15431] px-12 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all shadow-xl active:scale-95 cursor-pointer">
-            Создать встречу
-          </button>
+          <ButtonLink href="#" text="Создать встречу" variant="whiteFill" />
         </div>
       </Container>
     </section>

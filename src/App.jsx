@@ -9,6 +9,7 @@ import Footer from "./components/Footer.jsx";
 import { HomePage } from "./pages/HomePage.jsx";
 import { EventPage } from "./pages/EventPage.jsx";
 import { OrganizerPage } from "./pages/OrganizerPage.jsx";
+import { AboutUs } from "./pages/AboutUs.jsx";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <main className="bg-white">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutUs />} />
           <Route path="/event/:id" element={<EventPage />} />
           <Route path="/organizer/:id" element={<OrganizerPage />} />
           <Route path="/events/*" element={<HomePage />} />
