@@ -2,7 +2,7 @@ import Container from "./ui/Container";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F15431] text-white rounded-t-[60px] pt-16 pb-6">
+    <footer className="bg-orange text-white rounded-t-[60px] pt-16 pb-6">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-4">
           <div className="flex items-start gap-2 col-span-1">
