@@ -41,7 +41,6 @@ export function Header() {
 
   return (
     <div className="relative z-100 bg-white">
-      {/* фон при открытом поиске */}
       <div
         className={`fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-all duration-300 ${
           isSearchActive ? "opacity-100 visible" : "opacity-0 invisible"
@@ -51,7 +50,6 @@ export function Header() {
 
       <Container>
         <header className="relative flex items-center justify-between py-6">
-          {/* ЛЕВАЯ ЧАСТЬ: ЛОГО + НАВИГАЦИЯ */}
           <div
             className={`flex items-center gap-10 transition-all duration-300 ${
               isSearchActive
@@ -119,7 +117,6 @@ export function Header() {
             </nav>
           </div>
 
-          {/* ПОИСКОВАЯ СТРОКА ПО ЦЕНТРУ (всплывает на всю ширину между лого и кнопками) */}
           <div
             className={`absolute left-1/2 -translate-x-1/2 w-full max-w-[650px] transition-all duration-500 ease-out z-50 px-4 ${
               isSearchActive
@@ -159,7 +156,6 @@ export function Header() {
             </div>
           </div>
 
-          {/* ПРАВАЯ ЧАСТЬ: КНОПКИ ДЕЙСТВИЙ */}
           <div className="flex items-center gap-4 z-10 flex-shrink-0">
             {!isSearchActive && (
               <button
@@ -178,7 +174,7 @@ export function Header() {
               }`}
             >
               <ButtonLink
-                href="/plans"
+                to="/plans"
                 text="Мои планы"
                 icon={heartIcon}
                 variant="header"

@@ -10,22 +10,29 @@ import { HomePage } from "./pages/HomePage.jsx";
 import { EventPage } from "./pages/EventPage.jsx";
 import { OrganizerPage } from "./pages/OrganizerPage.jsx";
 import { AboutUs } from "./pages/AboutUs.jsx";
+import { PlansPage } from "./pages/PlansPage";
+import { FavoritesProvider } from "./context/FavoritesContext";
 
 function App() {
   return (
     <Router>
-      <Header />
-      <main className="bg-white">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/event/:id" element={<EventPage />} />
-          <Route path="/organizer/:id" element={<OrganizerPage />} />
-          <Route path="/events/*" element={<HomePage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </main>
-      <Footer />
+      <FavoritesProvider>
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <main className="bg-white flex-1">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/plans" element={<PlansPage />} />
+              <Route path="/event/:id" element={<EventPage />} />
+              <Route path="/organizer/:id" element={<OrganizerPage />} />
+              <Route path="/events/*" element={<HomePage />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </FavoritesProvider>
     </Router>
   );
 }

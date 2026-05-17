@@ -1,4 +1,8 @@
-export default function ButtonLink({ href, text, icon, variant, onClick }) {
+import { Link } from "react-router-dom";
+
+export default function ButtonLink({ to, href, text, icon, variant, onClick }) {
+  const targetPath = to || href;
+
   const baseStyles =
     "flex font-inherit items-center gap-2 font-semibold transition-all duration-300 active:scale-95";
 
@@ -15,15 +19,27 @@ export default function ButtonLink({ href, text, icon, variant, onClick }) {
       "text-[14px] font-bold hover:text-[#F15431] transition-colors font-bold",
   };
 
-  return (
-    <a
-      onClick={onClick}
-      className={`${baseStyles} ${variants[variant]} cursor-pointer`}
-    >
+  const combinedClasses = `${baseStyles} ${variants[variant]}`;
+
+  const renderContent = () => (
+    <>
       {icon && (
         <img src={icon} alt="иконка" className="w-6 h-6 object-contain" />
       )}
       <span>{text}</span>
-    </a>
+    </>
+  );
+
+  if (targetPath) {
+    return (
+      <Link to={targetPath} className={combinedClasses}>
+        {renderContent()}
+      </Link>
+    );
+  }
+  return (
+    <button onClick={onClick} className={combinedClasses} type="button">
+      {renderContent()}
+    </button>
   );
 }

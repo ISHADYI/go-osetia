@@ -10,20 +10,20 @@ export default function OfficialPosterCard({
 }) {
   return (
     <article
-      className="relative w-[315px] h-[440px] rounded-[30px] overflow-hidden flex flex-col justify-between p-5 group cursor-pointer shrink-0"
+      className="relative w-[315px] h-[440px] rounded-[22px] overflow-hidden flex flex-col justify-between p-5 group cursor-pointer shrink-0"
       style={{
         backgroundImage: `url(${image})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute inset-0 bg-linear-to-t from-[#0F0F10] via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent" />
 
       <header className="relative z-10 flex justify-between items-start">
-        <span className="bg-orange-600 text-white text-[12px] px-3 py-1 rounded-full font-medium">
+        <span className="bg-orange text-white text-[12px] px-3 py-1 rounded-full font-medium">
           {tag}
         </span>
-        <button className="bg-white/20 backdrop-blur-md p-2 rounded-full hover:bg-white/40 transition-colors">
+        <button className="bg-white/20 backdrop-blur-md p-2 rounded-full hover:bg-white/40 transition-colors cursor-pointer">
           <img src={heartIcon} alt="Избранное" className="w-5 h-5 invert" />
         </button>
       </header>
