@@ -180,7 +180,6 @@ export function Header() {
                 variant="header"
               />
               <ButtonLink
-                href="#"
                 text="Войти"
                 icon={userIcon}
                 variant="header"
@@ -190,7 +189,7 @@ export function Header() {
                 }}
               />
               <ButtonLink
-                href="#"
+                to="/create-meeting"
                 text="Создать встречу"
                 variant="orangeFill"
               />

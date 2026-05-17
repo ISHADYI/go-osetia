@@ -12,6 +12,7 @@ import { OrganizerPage } from "./pages/OrganizerPage.jsx";
 import { AboutUs } from "./pages/AboutUs.jsx";
 import { PlansPage } from "./pages/PlansPage";
 import { FavoritesProvider } from "./context/FavoritesContext";
+import { CreateMeetingPage } from "./pages/CreateMeetingPage.jsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/plans" element={<PlansPage />} />
+              <Route path="/create-meeting" element={<CreateMeetingPage />} />
               <Route path="/event/:id" element={<EventPage />} />
               <Route path="/organizer/:id" element={<OrganizerPage />} />
               <Route path="/events/*" element={<HomePage />} />
