@@ -4,9 +4,9 @@
 @theme{
   --font-default: "Montserrat", sans-serif;
 
-  --color-orange: #E85102;
+  --color-orange: #FF5000;
   --color-black: #1C1C1C;
-  --color-white: #FDF9EC;
+  --color-white: #ffffff;
 }
 * {
   @apply font-default;

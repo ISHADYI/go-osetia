@@ -1,11 +1,11 @@
 import React from "react";
 import { Hero } from "../components/Hero";
-import { CategorySlider } from "../components/CategorySlider";
+import { CategoryGrid } from "../components/CategoryGrid";
 import { RunningLine } from "../components/RunningLine";
 import { AllMeetings } from "../components/AllMeetings";
 import { OfficialPoster } from "../components/OfficialPoster";
 import Map from "../components/Map";
-import InterestingPlaces from "../components/InterestingPlaces";
+// import InterestingPlaces from "../components/InterestingPlaces";
 import Cta from "../components/Cta";
 import PastEventsPhotos from "../components/PastEventsPhotos";
 import Reviews from "../components/Reviews";
@@ -47,18 +47,30 @@ const CATEGORIES_DATA = [
     today: 5,
     image: "/images/active-category.png",
   },
+  {
+    title: "Пикники",
+    count: 15,
+    today: 5,
+    image: "/images/active-category.png",
+  },
+  {
+    title: "Пикники",
+    count: 15,
+    today: 5,
+    image: "/images/active-category.png",
+  },
 ];
 
 export function HomePage() {
   return (
     <>
       <Hero />
-      <CategorySlider categories={CATEGORIES_DATA} />
+      <CategoryGrid categories={CATEGORIES_DATA} />
       <RunningLine />
       <AllMeetings />
       <OfficialPoster />
       <Map />
-      <InterestingPlaces />
+      {/* <InterestingPlaces /> */}
       <Cta />
       <PastEventsPhotos />
       <Reviews />

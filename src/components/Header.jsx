@@ -73,7 +73,7 @@ export function Header() {
                 Поддержка
               </NavLink>
 
-              <div className="relative group cursor-pointer whitespace-nowrap">
+              {/* <div className="relative group cursor-pointer whitespace-nowrap">
                 <div className="flex items-center gap-1 font-semibold text-black hover:text-orange transition-colors">
                   Интересные места
                   <svg
@@ -113,7 +113,7 @@ export function Header() {
                     </Link>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </nav>
           </div>
 

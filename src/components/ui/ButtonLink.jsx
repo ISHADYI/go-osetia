@@ -8,11 +8,11 @@ export default function ButtonLink({ to, href, text, icon, variant, onClick }) {
 
   const variants = {
     orangeFill:
-      "py-[12px] px-[40px] bg-orange text-white rounded-[100px] hover:bg-[#d44324]",
+      "py-[12px] px-[40px] bg-orange text-white rounded-[100px] hover:bg-black",
     whiteFill:
-      "py-[12px] px-[40px] bg-white text-black rounded-[100px] hover:bg-[#FFF5F2]",
+      "py-[12px] px-[40px] bg-white text-black rounded-[100px] hover:bg-black hover:text-white",
     blackFill:
-      "py-[12px] px-[40px] bg-black text-white rounded-[100px] hover:bg-white hover:text-black",
+      "py-[12px] px-[40px] bg-black text-white rounded-[100px] hover:bg-orange",
     notFill:
       "bg-transparent text-gray-700 font-semibold px-4 py-2 rounded-xl transition-all duration-300 hover:text-[#EC562A] hover:bg-orange-50/50 active:scale-95",
     header:

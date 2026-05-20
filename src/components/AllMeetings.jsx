@@ -1,16 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MEETINGS_DATA } from "../data/meetingsData";
 import Container from "./ui/Container";
 import DropDown from "./ui/DropDown";
 import MeetingCard from "./ui/MeetingCard";
+import Pagination from "./ui/Pagination";
 
-
+const ITEMS_PER_PAGE = 16;
 
 export function AllMeetings() {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [ageRange, setAgeRange] = useState({ min: 0, max: 100 });
   const [dates, setDates] = useState([]);
   const [sortOrder, setSortOrder] = useState("default");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedTypes, ageRange, dates, sortOrder]);
 
   const filteredMeetings = MEETINGS_DATA.filter((meeting) => {
     const typeMatch =
@@ -27,8 +33,6 @@ export function AllMeetings() {
     const ageMatch =
       meeting.minAge >= ageRange.min && meeting.maxAge <= ageRange.max;
 
-    // const freeMatch = sortOrder === "free" ? meeting.price === 0 : true;
-
     return typeMatch && ageMatch && priceMatch;
   });
 
@@ -37,6 +41,18 @@ export function AllMeetings() {
     if (sortOrder === "desc") return b.price - a.price;
     return 0;
   });
+
+  const totalPages = Math.ceil(sortedMeetings.length / ITEMS_PER_PAGE);
+
+  const currentMeetings = sortedMeetings.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
+  );
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 1400, behavior: "smooth" });
+  };
 
   return (
     <section className="mb-20">
@@ -53,11 +69,8 @@ export function AllMeetings() {
               multiSelect={true}
               onSelect={(val) => setSelectedTypes(val)}
             />
-
             <DropDown label="Возраст" type="age" onSelect={setAgeRange} />
-
             <DropDown label="Когда" type="calendar" onSelect={setDates} />
-
             <DropDown
               label="Цена"
               align="right"
@@ -78,10 +91,16 @@ export function AllMeetings() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {sortedMeetings.map((meeting) => (
+          {currentMeetings.map((meeting) => (
             <MeetingCard key={meeting.id} {...meeting} />
           ))}
         </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </Container>
     </section>
   );

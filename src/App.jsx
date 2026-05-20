@@ -13,6 +13,7 @@ import { AboutUs } from "./pages/AboutUs.jsx";
 import { PlansPage } from "./pages/PlansPage";
 import { FavoritesProvider } from "./context/FavoritesContext";
 import { CreateMeetingPage } from "./pages/CreateMeetingPage.jsx";
+import { CategoryMeetings } from "./pages/CategoryMeetings.jsx";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/plans" element={<PlansPage />} />
               <Route path="/create-meeting" element={<CreateMeetingPage />} />
+              <Route path="/category/:categoryName" element={<CategoryMeetings />} />
               <Route path="/event/:id" element={<EventPage />} />
               <Route path="/organizer/:id" element={<OrganizerPage />} />
               <Route path="/events/*" element={<HomePage />} />

@@ -4,7 +4,7 @@ export function RunningLine() {
 
   return (
     <section className="mb-20">
-      <div className="relative flex overflow-hidden bg-[#f15a24] py-4 select-none">
+      <div className="relative flex overflow-hidden bg-orange py-4 select-none">
         <div className="flex whitespace-nowrap animate-marquee">
           <span className="text-white text-2xl font-bold uppercase tracking-wider">
             {repeatText}
