@@ -1,20 +1,24 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Container from "../components/ui/Container";
 import heartIcon from "../assets/icons/heart-outline.svg";
 import starIcon from "../assets/icons/rating-star.svg";
+import { Heart } from "lucide-react";
+import { useFavorites } from "../context/FavoritesContext";
 
 export function EventPage() {
-  const [isSaved, setIsSaved] = useState(false);
+  const id = useParams().id;
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const favorite = isFavorite(id);
 
   return (
     <div className="py-12 bg-white">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-8">
-            <div className="rounded-[40px] overflow-hidden h-[450px] mb-8 shadow-sm">
+            <div className="rounded-[22px] overflow-hidden h-[450px] mb-8 shadow-sm">
               <img
-                src="https://images.unsplash.com/photo-1528605248644-14dd04022da1"
+                src="../../images/eventPoster/event-page-img.jpg"
                 alt="Event"
                 className="w-full h-full object-cover"
               />
@@ -38,8 +42,7 @@ export function EventPage() {
               </p>
             </div>
 
-
-            <div className="mt-12 p-8 bg-[#F8F8F8] rounded-[32px] flex items-center justify-between">
+            <div className="mt-12 p-8 bg-[#F8F8F8] rounded-[22px] flex items-center justify-between">
               <div className="flex items-center gap-5">
                 <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden">
                   <img
@@ -64,32 +67,34 @@ export function EventPage() {
               </Link>
             </div>
           </div>
-          
 
           <div className="lg:col-span-4">
-            <div className="sticky top-28 p-8 border border-gray-100 rounded-[32px] shadow-xl shadow-gray-100/50">
+            <div className="p-8 border border-black/10 rounded-[22px]">
               <div className="flex justify-between items-end mb-8">
                 <div>
                   <p className="text-gray-400 text-sm mb-1">Стоимость</p>
                   <p className="text-3xl font-bold">500 ₽</p>
                 </div>
-                <p className="text-[#F15431] font-bold">8 мест осталось</p>
+                <p className="text-orange font-bold">8 мест осталось</p>
               </div>
 
-              <button className="w-full bg-[#F15431] text-white py-5 rounded-2xl font-bold text-lg mb-4 hover:opacity-90 transition-all">
+              <button className="w-full bg-orange text-white py-5 rounded-2xl font-bold text-lg mb-4 hover:opacity-90 transition-all cursor-pointer">
                 Записаться
               </button>
 
               <button
-                onClick={() => setIsSaved(!isSaved)}
-                className={`w-full flex items-center justify-center gap-3 py-5 rounded-2xl font-bold border-2 transition-all ${
-                  isSaved
-                    ? "bg-green-50 border-green-100 text-green-500"
-                    : "border-gray-100 text-[#0F0F10]"
+                onClick={() => toggleFavorite(id)}
+                className={`w-full flex items-center justify-center gap-3 py-5 rounded-2xl font-bold border-2 transition-all cursor-pointer ${
+                  favorite ? "text-orange" : "border-gray-100 text-black"
                 }`}
               >
-                <img src={heartIcon} className="w-6" alt="heart" />
-                {isSaved ? "В моих планах" : "Добавить в планы"}
+                <Heart
+                  size={20}
+                  fill={favorite ? "currentColor" : "none"}
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                />
+                {favorite ? "В моих планах" : "Добавить в планы"}
               </button>
             </div>
           </div>

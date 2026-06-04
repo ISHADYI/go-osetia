@@ -7,10 +7,10 @@ import { Heart } from "lucide-react";
 
 export function PlansPage() {
   const { favorites } = useFavorites();
-
   const favoriteMeetings = MEETINGS_DATA.filter((meeting) =>
-    favorites.includes(meeting.id),
+    favorites.includes(String(meeting.id)),
   );
+  console.log(favoriteMeetings)
 
   return (
     <div className="mt-12.5 mb-25">

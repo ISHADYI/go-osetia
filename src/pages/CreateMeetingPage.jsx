@@ -10,6 +10,7 @@ import {
   FileText,
   X,
 } from "lucide-react";
+import ButtonLink from "../components/ui/ButtonLink";
 
 export function CreateMeetingPage() {
   const [title, setTitle] = useState("");
@@ -330,12 +331,11 @@ export function CreateMeetingPage() {
             </div>
 
             <div className="flex justify-end pt-4">
-              <button
-                type="submit"
-                className="w-full sm:w-auto py-4 px-12 bg-orange text-white font-bold rounded-[100px] hover:bg-[#d44324] transition-all duration-300 active:scale-95 shadow-md shadow-orange/20 text-center cursor-pointer"
-              >
-                Опубликовать встречу
-              </button>
+              <ButtonLink
+                to=""
+                text="Опубликовать встречу"
+                variant="orangeFill"
+              />
             </div>
           </form>
         </div>

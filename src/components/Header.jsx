@@ -66,9 +66,9 @@ export function Header() {
               <NavLink to="/about" className={navLinkClass}>
                 О нас
               </NavLink>
-              <NavLink to="/categories" className={navLinkClass}>
+              {/* <NavLink to="/categories" className={navLinkClass}>
                 Категории
-              </NavLink>
+              </NavLink> */}
               <NavLink to="/support" className={navLinkClass}>
                 Поддержка
               </NavLink>

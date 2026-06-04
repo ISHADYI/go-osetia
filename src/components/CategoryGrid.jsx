@@ -18,13 +18,13 @@ export function CategoryGrid({ categories }) {
             <Link
               key={index}
               to={`/category/${encodeURIComponent(cat.title)}`}
-              className="flex bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group"
+              className="flex bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:transition-all duration-300 group"
             >
               <div className="w-28 sm:w-32 h-full min-h-[100px] shrink-0 overflow-hidden relative">
                 <img
                   src={cat.image}
                   alt={cat.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover"
                 />
               </div>
 

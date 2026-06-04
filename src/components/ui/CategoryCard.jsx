@@ -1,4 +1,3 @@
-// src/components/ui/CategoryCard.jsx
 import React from "react";
 
 export default function CategoryCard({ title, count, today, image, isActive }) {
