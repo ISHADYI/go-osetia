@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { NavLink, Link } from "react-router-dom";
+// import React, { useState, useEffect, useRef } from "react";
+// import { NavLink, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import Container from "./ui/Container";
 import { Logo } from "./ui/Logo";
 import ButtonLink from "./ui/ButtonLink";
 import AuthModal from "./ui/AuthModal";
+import SearchBar from "./ui/SearchBar";
 
 import heartIcon from "../assets/icons/heart-outline.svg";
 import userIcon from "../assets/icons/user.svg";
@@ -27,14 +30,14 @@ const SearchIcon = () => (
 export function Header() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const searchInputRef = useRef(null);
+  // const searchInputRef = useRef(null);
 
-  useEffect(() => {
-    if (isSearchActive) {
-      const timer = setTimeout(() => searchInputRef.current?.focus(), 100);
-      return () => clearTimeout(timer);
-    }
-  }, [isSearchActive]);
+  // useEffect(() => {
+  //   if (isSearchActive) {
+  //     const timer = setTimeout(() => searchInputRef.current?.focus(), 100);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [isSearchActive]);
 
   const navLinkClass = ({ isActive }) =>
     `font-semibold transition-colors hover:text-orange whitespace-nowrap ${isActive ? "text-orange" : "text-black"}`;
@@ -58,7 +61,6 @@ export function Header() {
             }`}
           >
             <Logo />
-
             <nav className="flex items-center gap-6">
               <NavLink to="/" className={navLinkClass}>
                 Главная
@@ -72,7 +74,6 @@ export function Header() {
               <NavLink to="/support" className={navLinkClass}>
                 Поддержка
               </NavLink>
-
               {/* <div className="relative group cursor-pointer whitespace-nowrap">
                 <div className="flex items-center gap-1 font-semibold text-black hover:text-orange transition-colors">
                   Интересные места
@@ -117,7 +118,7 @@ export function Header() {
             </nav>
           </div>
 
-          <div
+          {/* <div
             className={`absolute left-1/2 -translate-x-1/2 w-full max-w-[650px] transition-all duration-500 ease-out z-50 px-4 ${
               isSearchActive
                 ? "opacity-100 visible translate-y-0"
@@ -154,7 +155,12 @@ export function Header() {
                 </svg>
               </button>
             </div>
-          </div>
+          </div> */}
+
+          <SearchBar
+            isActive={isSearchActive}
+            onClose={() => setIsSearchActive(false)}
+          />
 
           <div className="flex items-center gap-4 z-10 flex-shrink-0">
             {!isSearchActive && (

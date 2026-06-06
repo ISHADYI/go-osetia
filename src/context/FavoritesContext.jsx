@@ -13,12 +13,15 @@ export function FavoritesProvider({ children }) {
   }, [favorites]);
 
   const toggleFavorite = (id) => {
+    const stringId = String(id);
     setFavorites((prev) =>
-      prev.includes(id) ? prev.filter((favId) => favId != id) : [...prev, id],
+      prev.includes(stringId)
+        ? prev.filter((favId) => favId !== stringId)
+        : [...prev, stringId],
     );
   };
 
-  const isFavorite = (id) => favorites.includes(id);
+  const isFavorite = (id) => favorites.includes(String(id));
   return (
     <FavoritesContext.Provider
       value={{ favorites, toggleFavorite, isFavorite }}
