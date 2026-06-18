@@ -1,7 +1,7 @@
 // import React, { useState, useEffect, useRef } from "react";
 // import { NavLink, Link } from "react-router-dom";
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, Link } from "react-router-dom";
 import Container from "./ui/Container";
 import { Logo } from "./ui/Logo";
 import ButtonLink from "./ui/ButtonLink";
@@ -30,6 +30,26 @@ const SearchIcon = () => (
 export function Header() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error("Ошибка чтения данных пользователя");
+      }
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token"); // на будущее, если добавишь токены
+    setUser(null);
+    window.location.reload(); // Перезагружаем страницу для сброса данных
+  };
+
   // const searchInputRef = useRef(null);
 
   // useEffect(() => {
@@ -185,7 +205,7 @@ export function Header() {
                 icon={heartIcon}
                 variant="header"
               />
-              <ButtonLink
+              {/* <ButtonLink
                 text="Войти"
                 icon={userIcon}
                 variant="header"
@@ -193,7 +213,38 @@ export function Header() {
                   e.preventDefault();
                   setIsAuthOpen(true);
                 }}
-              />
+              /> */}
+
+              {user ? (
+                <div className="flex items-center gap-3 border-r border-gray-200 pr-4 ml-2">
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-2 text-[14px] font-bold text-gray-900 hover:text-orange transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-orange-50 text-orange flex items-center justify-center font-bold text-sm group-hover:bg-orange group-hover:text-white transition-all">
+                      {user.firstName
+                        ? user.firstName[0].toUpperCase()
+                        : user.email[0].toUpperCase()}
+                    </div>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="text-[13px] text-gray-400 hover:text-red-500 transition-colors font-medium cursor-pointer"
+                  >
+                    Выйти
+                  </button>
+                </div>
+              ) : (
+                <ButtonLink
+                  text="Войти"
+                  icon={userIcon}
+                  variant="header"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsAuthOpen(true);
+                  }}
+                />
+              )}
               <ButtonLink
                 to="/create-meeting"
                 text="Создать встречу"
