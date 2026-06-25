@@ -32,7 +32,7 @@ export default function ButtonLink({ to, href, text, icon, variant, onClick }) {
 
   if (targetPath) {
     return (
-      <Link to={targetPath} className={combinedClasses}>
+      <Link to={targetPath} className={combinedClasses} onClick={onClick}>
         {renderContent()}
       </Link>
     );

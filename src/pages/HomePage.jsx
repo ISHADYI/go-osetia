@@ -65,13 +65,13 @@ export function HomePage() {
   return (
     <>
       <Hero />
-      <CategoryGrid categories={CATEGORIES_DATA} />
+      <CategoryGrid />
       <RunningLine />
       <AllMeetings />
       <OfficialPoster />
-      <Map />
+      {/* <Map /> */}
       {/* <InterestingPlaces /> */}
-      <Cta />
+      {/* <Cta /> */}
       <PastEventsPhotos />
       <Reviews />
     </>

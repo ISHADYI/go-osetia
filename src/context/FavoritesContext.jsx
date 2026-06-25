@@ -3,25 +3,67 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const FavoritesContext = createContext();
 
 export function FavoritesProvider({ children }) {
+  // Достаем текущего пользователя и токен
+  const storedUser = localStorage.getItem("user");
+  const currentUser = storedUser ? JSON.parse(storedUser) : null;
+  const token = localStorage.getItem("token");
+
+  // Динамический ключ: у каждого аккаунта теперь СВОЕ избранное
+  const storageKey = currentUser?.email
+    ? `go_ossetia_favorites_${currentUser.email}`
+    : "go_ossetia_favorites_guest";
+
   const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem("go_ossetia_favorites");
+    const saved = localStorage.getItem(storageKey);
     return saved ? JSON.parse(saved) : [];
   });
 
+  // При смене пользователя загружаем его персональный список
   useEffect(() => {
-    localStorage.setItem("go_ossetia_favorites", JSON.stringify(favorites));
-  }, [favorites]);
+    const saved = localStorage.getItem(storageKey);
+    setFavorites(saved ? JSON.parse(saved) : []);
+  }, [storageKey]);
 
-  const toggleFavorite = (id) => {
-    const stringId = String(id);
-    setFavorites((prev) =>
-      prev.includes(stringId)
-        ? prev.filter((favId) => favId !== stringId)
-        : [...prev, stringId],
-    );
+  const toggleFavorite = async (id, type = "regular") => {
+    const itemKey = `${type}-${id}`;
+    const isFav = favorites.includes(itemKey);
+
+    // Сначала мгновенно обновляем интерфейс (оптимистичный UI)
+    let updatedFavorites;
+    if (isFav) {
+      updatedFavorites = favorites.filter((favId) => favId !== itemKey);
+    } else {
+      updatedFavorites = [...favorites, itemKey];
+    }
+
+    setFavorites(updatedFavorites);
+    localStorage.setItem(storageKey, JSON.stringify(updatedFavorites));
+
+    // Если пользователь авторизован, отправляем изменения на сервер
+    if (token) {
+      try {
+        const endpoint = isFav
+          ? `http://localhost:3000/api/events/${id}/unfavorite`
+          : `http://localhost:3000/api/events/${id}/favorite`;
+
+        await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        console.error("Ошибка синхронизации с сервером:", error);
+      }
+    }
   };
 
-  const isFavorite = (id) => favorites.includes(String(id));
+  // Проверка по составному ключу (тип + id)
+  const isFavorite = (id, type = "regular") => {
+    return favorites.includes(`${type}-${id}`);
+  };
+
   return (
     <FavoritesContext.Provider
       value={{ favorites, toggleFavorite, isFavorite }}

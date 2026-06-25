@@ -1,27 +1,51 @@
 import { useState, useEffect } from "react";
-import { MEETINGS_DATA } from "../data/meetingsData";
 import Container from "./ui/Container";
-import DropDown from "./ui/DropDown";
 import MeetingCard from "./ui/MeetingCard";
 import Pagination from "./ui/Pagination";
+import { API_BASE_URL } from "../configs/auth";
+import { useRequest } from "../hooks/useRequest";
+import { normalizeEvent } from "../utils/normalizeEvent";
+import FilterBar from "./ui/FilterBar";
 
 const ITEMS_PER_PAGE = 16;
 
 export function AllMeetings() {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [ageRange, setAgeRange] = useState({ min: 0, max: 100 });
-  const [dates, setDates] = useState([]);
+  const [dates, setDates] = useState([]); 
   const [sortOrder, setSortOrder] = useState("default");
   const [currentPage, setCurrentPage] = useState(1);
+
+  const { sendData } = useRequest();
+  const [meetings, setMeetings] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMeetings = async () => {
+      setLoading(true);
+      const res = await sendData(`${API_BASE_URL}/events?limit=50`);
+
+      if (res.success && res.data) {
+        const normalized = Array.isArray(res.data)
+          ? res.data.map(normalizeEvent)
+          : (res.data.events || []).map(normalizeEvent);
+        setMeetings(normalized);
+      }
+      setLoading(false);
+    };
+
+    fetchMeetings();
+  }, []);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedTypes, ageRange, dates, sortOrder]);
 
-  const filteredMeetings = MEETINGS_DATA.filter((meeting) => {
-    const typeMatch =
-      selectedTypes.length === 0 ||
-      meeting.types.some((t) => selectedTypes.includes(t));
+  const filteredMeetings = meetings.filter((meeting) => {
+    let typeMatch = true;
+    if (selectedTypes.length > 0) {
+      typeMatch = meeting.types.some((t) => selectedTypes.includes(t));
+    }
 
     let priceMatch = true;
     if (sortOrder === "free") {
@@ -33,7 +57,13 @@ export function AllMeetings() {
     const ageMatch =
       meeting.minAge >= ageRange.min && meeting.maxAge <= ageRange.max;
 
-    return typeMatch && ageMatch && priceMatch;
+    let dateMatch = true;
+    if (dates.start && dates.end) {
+      const meetingDate = new Date(meeting.date);
+      dateMatch = meetingDate >= dates.start && meetingDate <= dates.end;
+    }
+
+    return typeMatch && priceMatch && ageMatch && dateMatch;
   });
 
   const sortedMeetings = [...filteredMeetings].sort((a, b) => {
@@ -43,16 +73,17 @@ export function AllMeetings() {
   });
 
   const totalPages = Math.ceil(sortedMeetings.length / ITEMS_PER_PAGE);
-
   const currentMeetings = sortedMeetings.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
   );
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 1400, behavior: "smooth" });
   };
+
+  if (loading) return <div className="text-center py-20">Загрузка встреч...</div>;
 
   return (
     <section className="mb-20">
@@ -62,32 +93,15 @@ export function AllMeetings() {
             Все встречи ({filteredMeetings.length})
           </h2>
 
-          <div className="flex flex-wrap gap-4 mb-10">
-            <DropDown
-              label="Тип события"
-              options={["Спорт", "Настолки", "Творчество"]}
-              multiSelect={true}
-              onSelect={(val) => setSelectedTypes(val)}
-            />
-            <DropDown label="Возраст" type="age" onSelect={setAgeRange} />
-            <DropDown label="Когда" type="calendar" onSelect={setDates} />
-            <DropDown
-              label="Цена"
-              align="right"
-              options={[
-                "Все",
-                "Бесплатно",
-                "По увеличению цены",
-                "По уменьшению цены",
-              ]}
-              onSelect={(val) => {
-                if (val === "Все") setSortOrder("default");
-                if (val === "Бесплатно") setSortOrder("free");
-                if (val === "По увеличению цены") setSortOrder("asc");
-                if (val === "По уменьшению цены") setSortOrder("desc");
-              }}
-            />
-          </div>
+          <FilterBar
+            selectedTypes={selectedTypes}
+            setSelectedTypes={setSelectedTypes}
+            ageRange={ageRange}
+            setAgeRange={setAgeRange}
+            setDates={setDates}
+            setSortOrder={setSortOrder}
+            showTypeFilter={true}
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

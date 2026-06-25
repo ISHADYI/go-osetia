@@ -10,19 +10,36 @@ export default function FilterBar({
   setSortOrder,
   showTypeFilter = true,
 }) {
+  const ALL_CATEGORIES = [
+    "Спорт",
+    "Настолки",
+    "Творчество",
+    "Прогулки",
+    "IT & Кодинг",
+    "Кино",
+    "Языки",
+    "Лекции",
+    "Кофе",
+    "Походы",
+    "Книги",
+    "Игры",
+    "Активный отдых",
+    "Кулинария",
+    "Экстрим",
+  ];
+
   return (
-    <div className="flex flex-wrap gap-4 mb-10">
+    <div className="flex flex-wrap gap-4">
       {showTypeFilter && (
         <DropDown
           label="Тип события"
-          options={["Спорт", "Настолки", "Творчество"]}
+          options={ALL_CATEGORIES}
           multiSelect={true}
-          onSelect={(val) => setSelectedTypes(val)}
+          onSelect={setSelectedTypes}
         />
       )}
 
       <DropDown label="Возраст" type="age" onSelect={setAgeRange} />
-
       <DropDown label="Когда" type="calendar" onSelect={setDates} />
 
       <DropDown
