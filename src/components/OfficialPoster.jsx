@@ -2,7 +2,7 @@ import { useState } from "react";
 import Container from "./ui/Container";
 import OfficialPosterCard from "./ui/OfficialPosterCard";
 
-const OFFICIALPOSTERS_DATA = [
+export const OFFICIALPOSTERS_DATA = [
   {
     id: 1,
     image: "/images/poster-1.jpg",

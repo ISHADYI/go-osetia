@@ -3,10 +3,13 @@ import { X } from "lucide-react";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import ConfirmForm from "./ConfirmForm";
+import ForgotPasswordForm from "./ForgotPasswordForm";
+import ResetPasswordForm from "./ResetPasswordForm";
 
 export default function AuthModal({ isOpen, onClose }) {
   const [mode, setMode] = useState("login");
   const [registeredEmail, setRegisteredEmail] = useState("");
+  const [resetEmail, setResetEmail] = useState("");
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "unset";
@@ -14,14 +17,23 @@ export default function AuthModal({ isOpen, onClose }) {
       setTimeout(() => {
         setMode("login");
         setRegisteredEmail("");
+        setResetEmail("");
       }, 300);
     }
   }, [isOpen]);
 
   if (!isOpen) return null;
 
-  const hint = mode === "login" ? "Нет аккаунта? " : "Есть аккаунт? ";
-  const action = mode === "login" ? "Зарегистрироваться" : "Войти";
+  let hint = "Есть аккаунт? ";
+  let action = "Войти";
+
+  if (mode === "login") {
+    hint = "Нет аккаунта? ";
+    action = "Зарегистрироваться";
+  } else if (mode === "forgot" || mode === "reset") {
+    hint = "Вспомнили пароль? ";
+    action = "Войти";
+  }
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -60,7 +72,10 @@ export default function AuthModal({ isOpen, onClose }) {
             <X size={32} />
           </button>
 
-          {mode === "login" && <LoginForm onForgotPassword={() => {}} />}
+          {mode === "login" && (
+            <LoginForm onForgotPassword={() => setMode("forgot")} />
+          )}
+
           {mode === "register" && (
             <RegisterForm
               onSuccess={(email) => {
@@ -69,7 +84,24 @@ export default function AuthModal({ isOpen, onClose }) {
               }}
             />
           )}
+
           {mode === "confirm" && <ConfirmForm email={registeredEmail} />}
+
+          {mode === "forgot" && (
+            <ForgotPasswordForm
+              onSuccess={(email) => {
+                setResetEmail(email);
+                setMode("reset");
+              }}
+            />
+          )}
+
+          {mode === "reset" && (
+            <ResetPasswordForm
+              email={resetEmail}
+              onSuccess={() => setMode("login")}
+            />
+          )}
         </div>
       </div>
     </div>

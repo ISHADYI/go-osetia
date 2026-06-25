@@ -1,4 +1,3 @@
-// src/components/ui/MeetingCard.jsx
 import { Link } from "react-router-dom";
 import React from "react";
 import { MapPin, Users, Heart } from "lucide-react";
@@ -14,7 +13,20 @@ export default function MeetingCard({
   types,
 }) {
   const { isFavorite, toggleFavorite } = useFavorites();
-  const favorite = isFavorite(id);
+  const favorite = isFavorite(id, "regular");
+
+  const handleFavoriteClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const isAuthenticated = localStorage.getItem("user");
+    if (!isAuthenticated) {
+      window.dispatchEvent(new Event("open-auth-modal"));
+      return;
+    }
+
+    toggleFavorite(id, "regular");
+  };
 
   return (
     <div className="bg-white rounded-[22px] overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
@@ -28,7 +40,8 @@ export default function MeetingCard({
         </Link>
 
         <button
-          onClick={() => toggleFavorite(id)}
+          // onClick={() => toggleFavorite(id)}
+          onClick={handleFavoriteClick}
           className={`absolute top-4 right-4 p-2 rounded-full backdrop-blur-md transition-all cursor-pointer z-10 ${
             favorite
               ? "bg-white text-orange"

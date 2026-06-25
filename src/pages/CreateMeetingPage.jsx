@@ -10,9 +10,14 @@ import {
   FileText,
   X,
 } from "lucide-react";
-import ButtonLink from "../components/ui/ButtonLink";
+import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../configs/auth";
+import { useRequest } from "../hooks/useRequest";
 
 export function CreateMeetingPage() {
+  const navigate = useNavigate();
+  const { isLoading, error, sendData } = useRequest();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -20,33 +25,10 @@ export function CreateMeetingPage() {
   const [location, setLocation] = useState("");
   const [priceType, setPriceType] = useState("free");
   const [priceValue, setPriceValue] = useState("");
-  const [ageRange, setAgeRange] = useState("20-25");
+  const [ageRange, setAgeRange] = useState("20-25 лет");
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
-
-  // фото
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file);
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
-
-  const removeImage = () => {
-    setImage(null);
-    setImagePreview(null);
-  };
-
-  // теги
-  const handleTagToggle = (tag) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags(selectedTags.filter((t) => t !== tag));
-    } else {
-      setSelectedTags([...selectedTags, tag]);
-    }
-  };
 
   const AVAILABLE_TAGS = [
     "Настолки",
@@ -66,21 +48,125 @@ export function CreateMeetingPage() {
     "Экстрим",
   ];
 
-  const handleSubmit = (e) => {
+  const TAG_MAPPING = {
+    "Настолки": "GAMES",
+    "Спорт": "SPORT",
+    "Прогулки": "TRAVEL",
+    "IT & Кодинг": "TALKS",
+    "Творчество": "GAMES",
+    "Кино": "MUSIC", 
+    "Языки": "TALKS",
+    "Лекции": "TALKS",
+    "Кофе": "REST",
+    "Походы": "TRAVEL",
+    "Книги": "BOOKS",
+    "Игры": "GAMES",
+    "Активный отдых": "SPORT",
+    "Кулинария": "REST",
+    "Экстрим": "SPORT",
+  };
+
+  const handleTagToggle = (tag) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!title || !description || !date || !time || !location) {
+      alert("Пожалуйста, заполните все обязательные поля");
+      return;
+    }
+
+    if (title.length < 3 || title.length > 100) {
+      alert("Название должно быть от 3 до 100 символов");
+      return;
+    }
+
+    if (description.length < 10 || description.length > 500) {
+      alert("Описание должно быть от 10 до 500 символов. Распиши подробнее!");
+      return;
+    }
+
+    if (location.length < 10 || location.length > 500) {
+      alert(
+        "Адрес должен быть от 10 до 500 символов (например: Владикавказ, пр. Мира 33)",
+      );
+      return;
+    }
+
+    if (selectedTags.length === 0) {
+      alert("Выберите хотя бы один тег");
+      return;
+    }
+
+    const backendCategories = selectedTags
+      .map((tag) => TAG_MAPPING[tag] || "GAMES")
+      .filter(Boolean);
+
+    let minAgeNum = 0;
+    let maxAgeNum = 100;
+
+    if (ageRange === "16-19 лет") {
+      minAgeNum = 16;
+      maxAgeNum = 19;
+    } else if (ageRange === "20-25 лет") {
+      minAgeNum = 20;
+      maxAgeNum = 25;
+    } else if (ageRange === "26-35 лет") {
+      minAgeNum = 26;
+      maxAgeNum = 35;
+    } else if (ageRange === "35+ лет") {
+      minAgeNum = 35;
+      maxAgeNum = 100;
+    }
+
+    const dateString = new Date(`${date}T${time}`).toISOString();
+
     const meetingData = {
-      title,
-      description,
-      date,
-      time,
-      location,
-      price: priceType === "free" ? 0 : Number(priceValue),
-      ageRange,
-      image,
-      tags: selectedTags,
+      name: title,
+      description: description,
+      address: location,
+      price: priceType === "free" ? 0 : Number(priceValue || 0),
+      minAge: minAgeNum,
+      maxAge: maxAgeNum,
+      categories: backendCategories,
+      date: dateString,
+      blocks: [{ title: "правила", content: "Видеосъемка" }],
     };
-    console.log("Данные новой встречи:", meetingData);
-    alert("Встреча успешно создана! (Пока в консоли)");
+
+    console.log("Отправляемые данные:", meetingData);
+
+    const result = await sendData(
+      `${API_BASE_URL}/events`,
+      "POST",
+      meetingData,
+    );
+
+    if (result.success) {
+      alert("Встреча успешно создана!");
+      navigate("/");
+    } else {
+      alert(`Не удалось создать встречу. Проверьте консоль для деталей.`);
+      console.error("Ошибка создания:", error, result);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const removeImage = () => {
+    setImage(null);
+    setImagePreview(null);
   };
 
   return (
@@ -98,6 +184,7 @@ export function CreateMeetingPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Обложка встречи */}
             <div className="bg-[#FAFAFA] rounded-[22px] border border-black p-6 sm:p-8 shadow-sm">
               <h2 className="text-lg font-bold text-black mb-4 flex items-center gap-2">
                 Обложка встречи
@@ -141,6 +228,7 @@ export function CreateMeetingPage() {
               )}
             </div>
 
+            {/* О встрече */}
             <div className="bg-[#FAFAFA] rounded-[22px] border border-black p-6 sm:p-8 shadow-sm space-y-6">
               <h2 className="text-lg font-bold text-black border-b border-gray-50 pb-2 flex items-center gap-2">
                 <FileText size={18} className="text-orange" />О встрече
@@ -205,6 +293,7 @@ export function CreateMeetingPage() {
               </div>
             </div>
 
+            {/* Когда и где */}
             <div className="bg-[#FAFAFA] rounded-[22px] border border-black p-6 sm:p-8 shadow-sm space-y-6">
               <h2 className="text-lg font-bold text-black border-b border-gray-50 pb-2 flex items-center gap-2">
                 <MapPin size={18} className="text-orange" />
@@ -254,6 +343,7 @@ export function CreateMeetingPage() {
               </div>
             </div>
 
+            {/* Стоимость и условия */}
             <div className="bg-[#FAFAFA] rounded-[22px] border border-black p-6 sm:p-8 shadow-sm space-y-6">
               <h2 className="text-lg font-bold text-black border-b border-gray-50 pb-2 flex items-center gap-2">
                 <Coins size={18} className="text-orange" />
@@ -331,11 +421,13 @@ export function CreateMeetingPage() {
             </div>
 
             <div className="flex justify-end pt-4">
-              <ButtonLink
-                to=""
-                text="Опубликовать встречу"
-                variant="orangeFill"
-              />
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="bg-orange text-white px-10 py-4 rounded-[100px] font-bold hover:bg-black transition-all disabled:opacity-70"
+              >
+                {isLoading ? "Публикуем..." : "Опубликовать встречу"}
+              </button>
             </div>
           </form>
         </div>

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Container from "../components/ui/Container";
 import ButtonLink from "../components/ui/ButtonLink";
 import Cta from "../components/Cta";
@@ -23,6 +24,15 @@ const SLIDES_DATA = [
 
 export function AboutUs() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
 
   const handleNext = () => {
     setCurrentSlide((prev) => (prev === SLIDES_DATA.length - 1 ? 0 : prev + 1));
@@ -30,6 +40,29 @@ export function AboutUs() {
 
   const handlePrev = () => {
     setCurrentSlide((prev) => (prev === 0 ? SLIDES_DATA.length - 1 : prev - 1));
+  };
+
+  const handleCreateMeeting = (e) => {
+    if (!user) {
+      e.preventDefault();
+      window.dispatchEvent(new Event("open-auth-modal"));
+    } else {
+      navigate("/create-meeting");
+    }
+  };
+
+  const handleFindMeeting = () => {
+    navigate("/");
+
+    setTimeout(() => {
+      const allMeetingsSection = document.querySelector("section.mb-20");
+      if (allMeetingsSection) {
+        allMeetingsSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, 400);
   };
 
   return (
@@ -49,8 +82,16 @@ export function AboutUs() {
               своих увлечений вместе.
             </p>
             <div className="flex items-center gap-5">
-              <ButtonLink href="#" text="Найти встречу" variant="orangeFill" />
-              <ButtonLink href="#" text="Создать встречу" variant="blackFill" />
+              <ButtonLink
+                text="Найти встречу"
+                variant="orangeFill"
+                onClick={handleFindMeeting}
+              />
+              <ButtonLink
+                text="Создать встречу"
+                variant="blackFill"
+                onClick={handleCreateMeeting}
+              />
             </div>
           </div>
 
@@ -268,76 +309,8 @@ export function AboutUs() {
             </div>
           </div>
         </div>
-
-        {/* шаги */}
-        <div className="mb-20">
-          <div className="text-center mb-10">
-            <h2 className="title-underline text-black">
-              Три шага до новой встречи
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 w-full">
-            {/* Шаг 1 */}
-            <div className="flex flex-col w-full">
-              <div className="w-full aspect-[4/3] bg-orange rounded-[22px] mb-5 overflow-hidden flex items-center justify-center">
-                <img
-                  src="/images/aboutUs/step1.png"
-                  alt="Найди своё"
-                  className="w-full h-full object-cover hidden"
-                />
-              </div>
-              <h3 className="font-bold text-base md:text-lg text-black mb-2">
-                Найди своё
-              </h3>
-              <p className="text-black/70 text-sm md:text-base leading-relaxed">
-                Просматривай ленту актуальных встреч во Владикавказе. Используй
-                удобные фильтры по категориям, возрасту или цене, чтобы найти
-                то, что тебе по душе сегодня.
-              </p>
-            </div>
-
-            {/* Шаг 2 */}
-            <div className="flex flex-col w-full">
-              <div className="w-full aspect-[4/3] bg-orange rounded-[22px] mb-5 overflow-hidden flex items-center justify-center">
-                <img
-                  src="/images/aboutUs/step2.png"
-                  alt="Запишись в один клик"
-                  className="w-full h-full object-cover hidden"
-                />
-              </div>
-              <h3 className="font-bold text-base md:text-lg text-black mb-2">
-                Запишись в один клик
-              </h3>
-              <p className="text-black/70 text-sm md:text-base leading-relaxed">
-                Выбрал событие? Просто нажми кнопку «Хочу пойти». Ты увидишь всю
-                необходимую информацию: точное место, время и кто еще будет в
-                компании.
-              </p>
-            </div>
-
-            {/* Шаг 3 */}
-            <div className="flex flex-col w-full">
-              <div className="w-full aspect-[4/3] bg-orange rounded-[22px] mb-5 overflow-hidden flex items-center justify-center">
-                <img
-                  src="/images/aboutUs/step3.png"
-                  alt="Приходи и знакомься"
-                  className="w-full h-full object-cover hidden"
-                />
-              </div>
-              <h3 className="font-bold text-base md:text-lg text-black mb-2">
-                Приходи и знакомься
-              </h3>
-              <p className="text-black/70 text-sm md:text-base leading-relaxed">
-                В назначенное время приходи на локацию. Наслаждайся процессом,
-                общайся и находи новых друзей. Всё самое интересное начинается в
-                момент встречи!
-              </p>
-            </div>
-          </div>
-        </div>
       </Container>
-      <Cta />
+      {/* <Cta /> */}
     </div>
   );
 }

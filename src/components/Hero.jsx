@@ -1,9 +1,20 @@
+import React from "react";
 import ButtonLink from "./ui/ButtonLink";
 import Container from "./ui/Container";
 
-// import bgHero from "../assets/heart-outline.svg";
-
 export function Hero() {
+  const handleCreateMeetingClick = (e) => {
+    // Проверяем, вошел ли пользователь (есть ли запись в localStorage)
+    const isAuthenticated = localStorage.getItem("user");
+
+    if (!isAuthenticated) {
+      e.preventDefault(); // Отменяем переход по ссылке /create-meeting
+
+      // Генерируем событие для открытия окна авторизации, как в карточках
+      window.dispatchEvent(new Event("open-auth-modal"));
+    }
+  };
+
   return (
     <section className="relative w-full h-fit mb-20">
       <Container className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center text-center">
@@ -15,14 +26,15 @@ export function Hero() {
             От шахмат в парке до велопрогулок по набережной. Создавай встречи
             или присоединяйся к другим
           </p>
-          <div className="flex items-center gap-5">
-            <ButtonLink href="#" text="Найти встречу" variant="orangeFill" />
             <ButtonLink
               to="/create-meeting"
               text="Создать встречу"
-              variant="whiteFill"
+              variant="orangeFill"
+              onClick={handleCreateMeetingClick}
             />
-          </div>
+          {/* <div className="flex items-center gap-5">
+            <ButtonLink href="#" text="Найти встречу" variant="orangeFill" />
+          </div> */}
         </div>
       </Container>
       <img

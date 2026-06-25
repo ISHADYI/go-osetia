@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { MEETINGS_DATA } from "../../data/meetingsData";
 import { useDebounce } from "../../hooks/useDebounce";
+import { API_BASE_URL } from "../../configs/auth";
+import { useRequest } from "../../hooks/useRequest";
+import { normalizeEvent } from "../../utils/normalizeEvent";
 
 const SearchIcon = () => (
   <svg
@@ -25,6 +27,8 @@ export default function SearchBar({ isActive, onClose }) {
   const inputRef = useRef(null);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
+  const { isLoading, error, sendData } = useRequest();
+
   useEffect(() => {
     if (isActive) {
       const timer = setTimeout(() => inputRef.current?.focus(), 100);
@@ -37,20 +41,27 @@ export default function SearchBar({ isActive, onClose }) {
 
   // Логика поиска при изменении текста
   useEffect(() => {
-    if (debouncedSearchTerm.trim() === "") {
-      setResults([]);
-      return;
-    }
+    const fetchEvents = async () => {
+      if (debouncedSearchTerm.trim() === "") {
+        setResults([]);
+        return;
+      }
 
-    const lowerCaseTerm = debouncedSearchTerm.toLowerCase();
+      const res = await sendData(
+        `${API_BASE_URL}/events?search=${encodeURIComponent(debouncedSearchTerm)}`,
+      );
 
-    const filtered = MEETINGS_DATA.filter(
-      (meeting) =>
-        meeting.title.toLowerCase().includes(lowerCaseTerm) ||
-        meeting.types.some((t) => t.toLowerCase().includes(lowerCaseTerm)),
-    ).slice(0, 10);
+      if (res.success) {
+        const normalized = Array.isArray(res.data)
+          ? res.data.map(normalizeEvent)
+          : (res.data.events || []).map(normalizeEvent);
+        setResults(normalized);
+      } else {
+        setResults([]);
+      }
+    };
 
-    setResults(filtered);
+    fetchEvents();
   }, [debouncedSearchTerm]);
 
   const handleResultClick = () => {
@@ -67,7 +78,6 @@ export default function SearchBar({ isActive, onClose }) {
       }`}
     >
       <div className="relative flex items-center">
-        {/* поиска */}
         <div className="absolute left-5 text-orange">
           <SearchIcon />
         </div>
@@ -128,7 +138,9 @@ export default function SearchBar({ isActive, onClose }) {
               ))
             ) : (
               <div className="p-6 text-center text-gray-500 text-sm border-t border-gray-50">
-                По запросу « <span className="font-semibold text-black">{searchTerm}</span>» ничего не найдено
+                По запросу «{" "}
+                <span className="font-semibold text-black">{searchTerm}</span>»
+                ничего не найдено
               </div>
             )}
           </div>

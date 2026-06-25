@@ -1,30 +1,77 @@
-// src/pages/CategoryMeetings.jsx
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { MEETINGS_DATA } from "../data/meetingsData";
 import Container from "../components/ui/Container";
 import MeetingCard from "../components/ui/MeetingCard";
 import FilterBar from "../components/ui/FilterBar";
 import Pagination from "../components/ui/Pagination";
 import { ChevronLeft } from "lucide-react";
+import { API_BASE_URL } from "../configs/auth";
+import { useRequest } from "../hooks/useRequest";
+import { normalizeEvent } from "../utils/normalizeEvent";
 
 const ITEMS_PER_PAGE = 16;
 
+const CATEGORY_MAPPING = {
+  Настолки: "GAMES",
+  "Настольные игры": "GAMES",
+  Спорт: "SPORT",
+  "Активный отдых": "SPORT",
+  Прогулки: "TRAVEL",
+  Походы: "TRAVEL",
+  Пикники: "TRAVEL",
+  Творчество: "GAMES",
+  Лекции: "TALKS",
+  "IT & Кодинг": "TALKS",
+  Языки: "TALKS",
+  Книги: "BOOKS",
+  Кино: "MUSIC",
+  Кулинария: "REST",
+  Кофе: "REST",
+  Экстрим: "SPORT",
+};
+
 export function CategoryMeetings() {
   const { categoryName } = useParams();
-  const decodedCategory = categoryName;
+  const decodedCategory = decodeURIComponent(categoryName || "").trim();
 
   const [ageRange, setAgeRange] = useState({ min: 0, max: 100 });
   const [dates, setDates] = useState([]);
   const [sortOrder, setSortOrder] = useState("default");
   const [currentPage, setCurrentPage] = useState(1);
 
+  const { sendData } = useRequest();
+  const [meetings, setMeetings] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMeetings = async () => {
+      setLoading(true);
+      const res = await sendData(`${API_BASE_URL}/events?limit=50`);
+
+      if (res.success && res.data) {
+        const normalized = Array.isArray(res.data)
+          ? res.data.map(normalizeEvent)
+          : (res.data.events || []).map(normalizeEvent);
+
+        setMeetings(normalized);
+      } else {
+        setMeetings([]);
+      }
+      setLoading(false);
+    };
+
+    fetchMeetings();
+  }, []);
+
   useEffect(() => {
     setCurrentPage(1);
   }, [ageRange, dates, sortOrder]);
 
-  const filteredMeetings = MEETINGS_DATA.filter((meeting) => {
-    const categoryMatch = meeting.types.includes(decodedCategory);
+  // Фильтрация по категории 
+  const filteredMeetings = meetings.filter((meeting) => {
+    const typeMatch =
+      selectedTypes.length === 0 ||
+      meeting.types.some((t) => selectedTypes.includes(t));
 
     let priceMatch = true;
     if (sortOrder === "free") {
@@ -36,7 +83,7 @@ export function CategoryMeetings() {
     const ageMatch =
       meeting.minAge >= ageRange.min && meeting.maxAge <= ageRange.max;
 
-    return categoryMatch && ageMatch && priceMatch;
+    return typeMatch && ageMatch && priceMatch;
   });
 
   const sortedMeetings = [...filteredMeetings].sort((a, b) => {
@@ -55,6 +102,16 @@ export function CategoryMeetings() {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  if (loading) {
+    return (
+      <section className="py-10 mb-20">
+        <Container>
+          <div className="text-center py-20">Загрузка встреч...</div>
+        </Container>
+      </section>
+    );
+  }
 
   return (
     <section className="py-10 mb-20">
@@ -88,7 +145,7 @@ export function CategoryMeetings() {
           </div>
         ) : (
           <div className="text-center py-20 text-gray-400 font-medium">
-            Встреч с такими параметрами пока не найдено :(
+            Встреч в категории "{decodedCategory}" пока не найдено :(
           </div>
         )}
 
