@@ -72,8 +72,8 @@ export function HomePage() {
       {/* <Map /> */}
       {/* <InterestingPlaces /> */}
       {/* <Cta /> */}
-      <PastEventsPhotos />
-      <Reviews />
+      {/* <PastEventsPhotos /> */}
+      {/* <Reviews /> */}
     </>
   );
 }

@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-orange text-white rounded-t-[60px] pt-16 pb-6">
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           <div className="flex items-start gap-2 col-span-1">
             <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center overflow-hidden p-1">
               <img
@@ -16,7 +16,7 @@ export default function Footer() {
             <span className="text-xl font-bold tracking-tight">KudaOsetia</span>
           </div>
 
-          <div className="flex flex-col gap-3">
+          {/* <div className="flex flex-col gap-3">
             <a
               href="#"
               className="hover:underline opacity-90 transition-opacity"
@@ -47,7 +47,7 @@ export default function Footer() {
             >
               О проекте
             </a>
-          </div>
+          </div> */}
 
           <div className="flex flex-col gap-3">
             <a
@@ -64,7 +64,7 @@ export default function Footer() {
             </a>
           </div>
 
-          <div className="flex flex-col gap-3">
+          {/* <div className="flex flex-col gap-3">
             <h4 className="font-bold mb-1">Связаться с нами</h4>
             <a
               href="https://t.me/..."
@@ -92,20 +92,20 @@ export default function Footer() {
             >
               Пожаловаться
             </a>
-          </div>
+          </div> */}
 
           <div className="flex flex-col gap-3">
             <h4 className="font-bold mb-1">Разработчики</h4>
             <div className="flex flex-col">
               <span className="text-sm opacity-70">Дизайнер</span>
-              <a href="#" className="underline underline-offset-4 decoration-1">
-                Пункт
+              <a href="#" className="decoration-1">
+                @ShadyXD
               </a>
             </div>
             <div className="flex flex-col">
               <span className="text-sm opacity-70">Разработчик</span>
-              <a href="#" className="underline underline-offset-4 decoration-1">
-                Пункт
+              <a href="#" className="decoration-1">
+                @ShadyXD | @AmletixQ
               </a>
             </div>
           </div>
